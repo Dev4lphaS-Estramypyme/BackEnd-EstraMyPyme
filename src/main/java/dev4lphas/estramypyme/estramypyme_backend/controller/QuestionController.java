@@ -1,5 +1,5 @@
 package dev4lphas.estramypyme.estramypyme_backend.controller;
 
-public class AdminController {
+public class QuestionController {
     
 }

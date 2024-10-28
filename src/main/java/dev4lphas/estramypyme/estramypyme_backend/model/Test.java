@@ -1,5 +1,5 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
-public class DiagnosticQuestion {
+public class Test {
     
 }
