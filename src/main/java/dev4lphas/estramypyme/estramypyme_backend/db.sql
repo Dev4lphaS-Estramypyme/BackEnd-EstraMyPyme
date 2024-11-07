@@ -1,4 +1,4 @@
--- Active: 1730133573426@@bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com@3306
+-- Active: 1730660231249@@brrxuh1ylf2yrameugxo-mysql.services.clever-cloud.com@3306@brrxuh1ylf2yrameugxo
 /* conexion al servidor
 Host: bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com
 Database: bex8rslfxuyzyfudg6hk
@@ -14,7 +14,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     name VARCHAR(255),
     active BOOLEAN DEFAULT TRUE,  -- Indica si el usuario está activo
-    roleName ENUM('Admin', 'Student', 'Teacher') NOT NULL
+/*     roleName ENUM('Admin', 'Student', 'Teacher') NOT NULL */
 );
 -- Tabla principal para los usuarios de empresas (clientes)
 CREATE TABLE usersCompanies (
