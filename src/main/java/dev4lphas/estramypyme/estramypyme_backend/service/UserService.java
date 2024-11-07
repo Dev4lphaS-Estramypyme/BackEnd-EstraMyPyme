@@ -32,7 +32,7 @@ public class UserService {
         User existingAdmin = userRepository.findAdminByEmail(user.getEmail());
         if (existingAdmin != null)
             return null;
-        user.setRolename("Admin");
+        user.setRoleName(User.RoleName.Admin);
         return userRepository.save(user);
     }
 
@@ -48,76 +48,15 @@ public class UserService {
         existingAdmin.setPassword(user.getPassword() == null ? existingAdmin.getPassword() : user.getPassword());
         existingAdmin.setName(user.getName() == null ? existingAdmin.getName() : user.getName());
         existingAdmin.setActive(existingAdmin.getActive());
-        existingAdmin.setRolename(user.getRolename() == null ? existingAdmin.getRolename() : user.getRolename());
+        existingAdmin.setRoleName(user.getRoleName() == null ? existingAdmin.getRoleName() : user.getRoleName());
 
         return userRepository.save(existingAdmin);
     }
-    
-    // Buscar Teacher por email
-    public User getTeacherByEmail(String email) {
-        return userRepository.findTeacherByEmail(email);
+
+    // Eliminar Admin por id
+    public void deleteAdminById(Long id) {
+        userRepository.deleteById(id);
     }
-
-    // Creación de teacher, validando por correo, además rolename siempre teacher
-    public User createTeacher(User user) {
-        User existingTeacher = userRepository.findTeacherByEmail(user.getEmail());
-        if (existingTeacher != null)
-            return null;
-        user.setRolename("Teacher");
-        return userRepository.save(user);
-    }
-
-    // Actualizar teacher buscando por correo unico
-    public User updateTeacher(String email, User user) {
-        User existingTeacher = userRepository.findTeacherByEmail(email);
-
-        if (existingTeacher == null)
-            return null;
-
-        existingTeacher.setId(user.getId() == null ? existingTeacher.getId() : user.getId());
-        existingTeacher.setEmail(user.getEmail() == null ? existingTeacher.getEmail() : user.getEmail());
-        existingTeacher.setPassword(user.getPassword() == null ? existingTeacher.getPassword() : user.getPassword());
-        existingTeacher.setName(user.getName() == null ? existingTeacher.getName() : user.getName());
-        existingTeacher.setActive(existingTeacher.getActive());
-        existingTeacher.setRolename(existingTeacher.getRolename());
-
-        return userRepository.save(existingTeacher);
-    }
-
-    // Actualizar role teacher buscando por correo unico
-    public User updateTeacherRole(String email, User user) {
-        User existingTeacher = userRepository.findTeacherByEmail(email);
-
-        if (existingTeacher == null)
-            return null;
-
-        existingTeacher.setId(existingTeacher.getId());
-        existingTeacher.setEmail(existingTeacher.getEmail());
-        existingTeacher.setPassword(existingTeacher.getPassword());
-        existingTeacher.setName(existingTeacher.getName());
-        existingTeacher.setActive(existingTeacher.getActive());
-        existingTeacher.setRolename(user.getRolename() == null ? existingTeacher.getRolename() : user.getRolename());
-
-        return userRepository.save(existingTeacher);
-    }
-
-    // Actualizar active teacher buscando por correo unico
-    public User updateTeacherActive(String email, User user) {
-        User existingTeacher = userRepository.findTeacherByEmail(email);
-
-        if (existingTeacher == null)
-            return null;
-
-        existingTeacher.setId(existingTeacher.getId());
-        existingTeacher.setEmail(existingTeacher.getEmail());
-        existingTeacher.setPassword(existingTeacher.getPassword());
-        existingTeacher.setName(existingTeacher.getName());
-        existingTeacher.setActive(user.getActive());
-        existingTeacher.setRolename(existingTeacher.getRolename());
-
-        return userRepository.save(existingTeacher);
-    }
-
 
     // Buscar Student por email
     public User getStundentByEmail(String email) {
@@ -129,7 +68,7 @@ public class UserService {
         User existingStudent = userRepository.findStudentByEmail(user.getEmail());
         if (existingStudent != null)
             return null;
-        user.setRolename("Student");
+        user.setRoleName(User.RoleName.Student);
         return userRepository.save(user);
     }
 
@@ -144,7 +83,7 @@ public class UserService {
         existingStudent.setPassword(user.getPassword() == null ? existingStudent.getPassword() : user.getPassword());
         existingStudent.setName(user.getName() == null ? existingStudent.getName() : user.getName());
         existingStudent.setActive(existingStudent.getActive());
-        existingStudent.setRolename(existingStudent.getRolename());
+        existingStudent.setRoleName(existingStudent.getRoleName());
 
         return userRepository.save(existingStudent);
     }
@@ -161,7 +100,7 @@ public class UserService {
         existingStudent.setPassword(existingStudent.getPassword());
         existingStudent.setName(existingStudent.getName());
         existingStudent.setActive(existingStudent.getActive());
-        existingStudent.setRolename(user.getRolename() == null ? existingStudent.getRolename() : user.getRolename());
+        existingStudent.setRoleName(user.getRoleName() == null ? existingStudent.getRoleName() : user.getRoleName());
 
         return userRepository.save(existingStudent);
     }
@@ -179,11 +118,85 @@ public class UserService {
         existingStudent.setName(existingStudent.getName());
         existingStudent.setActive(user.getActive());
         System.out.println(user);
-        existingStudent.setRolename(existingStudent.getRolename());
+        existingStudent.setRoleName(existingStudent.getRoleName());
 
         return userRepository.save(existingStudent);
     }
 
+    // Eliminar student por id
+    public void deleteStudentById(Long id) {
+        userRepository.deleteById(id);
+    }
 
+    // Buscar Teacher por email
+    public User getTeacherByEmail(String email) {
+        return userRepository.findTeacherByEmail(email);
+    }
+
+    // Creación de teacher, validando por correo, además rolename siempre teacher
+    public User createTeacher(User user) {
+        User existingTeacher = userRepository.findTeacherByEmail(user.getEmail());
+        if (existingTeacher != null)
+            return null;
+        user.setRoleName(User.RoleName.Teacher);
+        ;
+        return userRepository.save(user);
+    }
+
+    // Actualizar teacher buscando por correo unico
+    public User updateTeacher(String email, User user) {
+        User existingTeacher = userRepository.findTeacherByEmail(email);
+
+        if (existingTeacher == null)
+            return null;
+
+        existingTeacher.setId(user.getId() == null ? existingTeacher.getId() : user.getId());
+        existingTeacher.setEmail(user.getEmail() == null ? existingTeacher.getEmail() : user.getEmail());
+        existingTeacher.setPassword(user.getPassword() == null ? existingTeacher.getPassword() : user.getPassword());
+        existingTeacher.setName(user.getName() == null ? existingTeacher.getName() : user.getName());
+        existingTeacher.setActive(existingTeacher.getActive());
+        existingTeacher.setRoleName(existingTeacher.getRoleName());
+
+        return userRepository.save(existingTeacher);
+    }
+
+    // Actualizar role teacher buscando por correo unico
+    public User updateTeacherRole(String email, User user) {
+        User existingTeacher = userRepository.findTeacherByEmail(email);
+
+        if (existingTeacher == null)
+            return null;
+
+        existingTeacher.setId(existingTeacher.getId());
+        existingTeacher.setEmail(existingTeacher.getEmail());
+        existingTeacher.setPassword(existingTeacher.getPassword());
+        existingTeacher.setName(existingTeacher.getName());
+        existingTeacher.setActive(existingTeacher.getActive());
+        existingTeacher.setRoleName(user.getRoleName() == null ? existingTeacher.getRoleName() : user.getRoleName());
+
+        return userRepository.save(existingTeacher);
+    }
+
+    // Actualizar active teacher buscando por correo unico
+    public User updateTeacherActive(String email, User user) {
+        User existingTeacher = userRepository.findTeacherByEmail(email);
+
+        if (existingTeacher == null)
+            return null;
+
+        existingTeacher.setId(existingTeacher.getId());
+        existingTeacher.setEmail(existingTeacher.getEmail());
+        existingTeacher.setPassword(existingTeacher.getPassword());
+        existingTeacher.setName(existingTeacher.getName());
+        existingTeacher.setActive(user.getActive());
+        existingTeacher.setRoleName(existingTeacher.getRoleName());
+
+        return userRepository.save(existingTeacher);
+    }
+
+    // Eliminar teacher por id
+    public void deleteTeacherById(Long id) {
+        userRepository.deleteById(id);
+    }
 
 }
