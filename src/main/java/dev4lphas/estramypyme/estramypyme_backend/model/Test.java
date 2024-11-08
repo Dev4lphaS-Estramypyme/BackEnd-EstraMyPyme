@@ -1,47 +1,36 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
-import java.util.Date;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tests") 
-@NoArgsConstructor
-@AllArgsConstructor
 public class Test {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false)
-    private Long companyId; // Cambiado a Long
+    private Long companyId;
+    private Boolean isReview;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.DATE)
-    private Date testDate;
+    @Column(updatable = false)
+    private LocalDateTime date;
 
-    @Column(nullable = false)
-    private Boolean isReviewed;
-
-    public Test(String id, Long companyId) { // Cambiado a Long
-        this.id = id;
-        this.companyId = companyId;
-        this.testDate = new Date(); 
-        this.isReviewed = false; 
+    @PrePersist
+    protected void onCreate() {
+        date = LocalDateTime.now();
     }
 
-    // Métodos getter y setter
-    public String getId() {
+    // Getters y Setters
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,19 +42,19 @@ public class Test {
         this.companyId = companyId;
     }
 
-    public Date getTestDate() {
-        return testDate;
+    public Boolean getIsReview() {
+        return isReview;
     }
 
-    public void setTestDate(Date testDate) {
-        this.testDate = testDate;
+    public void setIsReview(Boolean isReview) {
+        this.isReview = isReview;
     }
 
-    public Boolean getIsReviewed() {
-        return isReviewed;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setIsReviewed(Boolean isReviewed) {
-        this.isReviewed = isReviewed;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

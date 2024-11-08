@@ -1,9 +1,11 @@
 package dev4lphas.estramypyme.estramypyme_backend.repository;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import dev4lphas.estramypyme.estramypyme_backend.model.Test;
+import org.springframework.stereotype.Repository;
+import dev4lphas.estramypyme.estramypyme_backend.model.Test; 
+import java.util.List;
 
-public interface TestRepository extends JpaRepository<Test, String> {
-    List<Test> findByCompanyId(Long companyId); // Cambiado a Long
+@Repository
+public interface TestRepository extends JpaRepository<Test, Long> {
+  List<Test> findByCompanyId(Long companyId);
 }

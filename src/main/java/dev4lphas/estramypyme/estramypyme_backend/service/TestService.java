@@ -1,56 +1,56 @@
 package dev4lphas.estramypyme.estramypyme_backend.service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import dev4lphas.estramypyme.estramypyme_backend.model.Test;
+
+import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
-import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TestService {
 
-    private final TestRepository testRepository;
-
     @Autowired
-    public TestService(TestRepository testRepository) {
-        this.testRepository = testRepository;
+    private TestRepository TestRepository;
+
+    public List<Test> findAll() {
+        return TestRepository.findAll();
     }
 
-    // Crear Test
-    public Test createTest(Test test) {
-        List<Test> previousTests = testRepository.findByCompanyId(test.getCompanyId());
-        Date sixMonthsAgo = Date.from(LocalDate.now().minusMonths(6).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public List<Test> findByCompanyId(Long companyId) {
+        return TestRepository.findByCompanyId(companyId);
+    }
 
-        // Verificar si el último test fue realizado en los últimos 6 meses
-        if (previousTests.stream().anyMatch(t -> t.getTestDate().after(sixMonthsAgo))) {
-            throw new IllegalStateException("No se puede realizar un nuevo test antes de 6 meses.");
+    public Test save(Test test) {
+        // Asegurarse de que isReview sea false al crear una nueva Review
+        if (test.getId() == null) {
+            test.setIsReview(false);
         }
 
-        test.setTestDate(new Date()); // fecha actual
-        test.setIsReviewed(false); // campo isReviewed en FALSE por defecto
-        return testRepository.save(test);
-    }
-
-    // Buscar Tests por Empresa: Devuelve todos los tests asociados a companyId
-    public List<Test> getTestsByCompanyId(Long companyId) {
-        return testRepository.findByCompanyId(companyId);
-    }
-
-    // Editar Información de Test
-    public Test updateTest(Test updatedTest) {
-        Optional<Test> existingTest = testRepository.findById(updatedTest.getId());
-        if (existingTest.isPresent()) {
-            Test test = existingTest.get();
-            test.setCompanyId(updatedTest.getCompanyId());  // solo actualiza el campo CompanyId
-            return testRepository.save(test);
+        List<Test> existingTest = TestRepository.findByCompanyId(test.getCompanyId());
+        if (!existingTest.isEmpty()) {
+            // Verificar si el Review más reciente tiene menos de 6 meses
+            Test latestTest = existingTest.get(0);
+            for (Test r : existingTest) {
+                if (r.getDate().isAfter(latestTest.getDate())) {
+                    latestTest = r;
+                }
+            }
+            LocalDateTime sixMonthsAgo = LocalDateTime.now().minusMonths(6);
+            if (latestTest.getDate().isAfter(sixMonthsAgo)) {
+                throw new RuntimeException("No se puede crear un nuevo Test para esta identificación porque ya existe uno creado hace menos de 6 meses.");
+            }
         }
-        throw new EntityNotFoundException("Test no encontrado"); // Si el test no se encuentra, muestra una excepción
+
+        return TestRepository.save(test);
+    }
+   
+
+    public void deleteById(Long id) {
+        TestRepository.deleteById(id);
     }
 }

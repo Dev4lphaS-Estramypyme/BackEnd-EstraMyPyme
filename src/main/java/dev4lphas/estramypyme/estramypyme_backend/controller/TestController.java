@@ -1,36 +1,57 @@
 package dev4lphas.estramypyme.estramypyme_backend.controller;
-
-import java.util.List;
+import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
+import dev4lphas.estramypyme.estramypyme_backend.model.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/tests")
+@RequestMapping("/test")
 public class TestController {
 
-    private final TestService testService;
-
     @Autowired
-    public TestController(TestService testService) {
-        this.testService = testService;
+    private TestService testService;
+
+    @GetMapping
+    public List<Test> getAllReviews() {
+        return testService.findAll();
     }
 
-    @PostMapping // crear test
-    public Test createTest(@RequestBody Test test) {
-        return testService.createTest(test);
+
+    //Consultar por el company id
+    @GetMapping("/{companyId}")
+    public List<Test> getReviewsByCompanyId(@PathVariable Long companyId) {
+        return testService.findByCompanyId(companyId);
     }
 
-    @GetMapping("/{companyId}") // buscar tests por ID de empresa
-    public List<Test> getTestsByCompanyId(@PathVariable Long companyId) { // Cambiado a Long
-        return testService.getTestsByCompanyId(companyId);
+
+    // Validar si se pudo crear el test y sino devolver el mensaje de error al front
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> createTest(@RequestBody Test test) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Test createdTest = testService.save(test);
+            response.put("success", true);
+            response.put("message", "Test creado exitosamente");
+            response.put("data", createdTest);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.ok(response);
+        }
     }
 
-    @PutMapping("/edit") // editar test
-    public Test updateTest(@RequestBody Test test) {
-        return testService.updateTest(test);
-    }
+  
+
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+    //     reviewService.deleteById(id);
+    //     return ResponseEntity.noContent().build();
+    // }
 }
