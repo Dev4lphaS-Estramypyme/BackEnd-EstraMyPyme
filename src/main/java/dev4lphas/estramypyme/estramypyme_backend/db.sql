@@ -1,4 +1,4 @@
--- Active: 1730133573426@@bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com@3306
+-- Active: 1730168807971@@bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com@3306
 /* conexion al servidor
 Host: bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com
 Database: bex8rslfxuyzyfudg6hk
