@@ -1,15 +1,17 @@
 package dev4lphas.estramypyme.estramypyme_backend.service;
 
-import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-
-import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import dev4lphas.estramypyme.estramypyme_backend.model.Test;
+import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
 
 @Service
 public class TestService {
@@ -52,5 +54,12 @@ public class TestService {
 
     public void deleteById(Long id) {
         TestRepository.deleteById(id);
+    }
+
+    public Test update(Test test) {
+        if (test.getId() == null) {
+            throw new IllegalArgumentException("El ID del Test no puede ser nulo para actualizar");
+        }
+        return TestRepository.save(test);
     }
 }
