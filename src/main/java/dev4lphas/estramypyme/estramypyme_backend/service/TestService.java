@@ -19,6 +19,11 @@ public class TestService {
     @Autowired
     private TestRepository TestRepository;
 
+    public boolean isReviewed(Long testId) {
+        Test test = TestRepository.findById(testId).orElse(null);
+        return test != null && test.getIsReview();
+    }
+
     public List<Test> findAll() {
         return TestRepository.findAll();
     }
