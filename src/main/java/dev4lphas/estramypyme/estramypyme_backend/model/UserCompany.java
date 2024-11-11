@@ -1,5 +1,8 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
+
+public class UserCompany {
+    
 import jakarta.persistence.*;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
