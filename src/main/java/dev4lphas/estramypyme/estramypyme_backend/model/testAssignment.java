@@ -1,5 +1,6 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
+
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -72,3 +73,10 @@ public class TestAssignment {
         this.assignmentDate = assignmentDate;
     }
 }
+
+
+public class testAssignment  {
+
+    
+    }
+

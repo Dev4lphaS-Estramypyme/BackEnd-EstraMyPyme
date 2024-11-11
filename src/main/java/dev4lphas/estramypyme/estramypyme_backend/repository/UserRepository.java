@@ -8,3 +8,12 @@ import dev4lphas.estramypyme.estramypyme_backend.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 }
+
+    User findAdminByEmail(String email);
+
+    User findStudentByEmail(String email);
+
+    User findTeacherByEmail(String email);
+    
+}
+

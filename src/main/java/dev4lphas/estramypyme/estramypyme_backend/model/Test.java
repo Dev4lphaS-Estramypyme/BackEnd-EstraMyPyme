@@ -1,5 +1,6 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
+
 import jakarta.persistence.*;
 
 import jakarta.persistence.GenerationType;
@@ -58,3 +59,5 @@ public class Test {
         this.date = date;
     }
 }
+
+
