@@ -28,10 +28,10 @@ public class TestAssignmentsController {
     @Autowired
     private TestAssignmentService testAssignmentService;
 
-     @Autowired
+    @Autowired
     private TestService testService;
 
-     @Autowired
+    @Autowired
     private UserService userService;
 
     @GetMapping
@@ -50,21 +50,19 @@ public class TestAssignmentsController {
     public ResponseEntity<Map<String, Object>> createTest(@RequestBody TestAssignment testAssignment) {
         Map<String, Object> response = new HashMap<>();
 
-          // Validar si is_reviewed en la tabla test está en false
-          if (testService.isReviewed(testAssignment.getTestId())) {
+        // Validar si is_reviewed en la tabla test está en false
+        if (testService.isReviewed(testAssignment.getTestId())) {
             response.put("success", false);
             response.put("message", "No se puede crear el TestAssignment porque is_reviewed en la tabla test está en true");
             return ResponseEntity.badRequest().body(response);
         }
 
-          // Validar si el usuario es Admin o Teacher
-          if (!userService.isAdminOrTeacher(testAssignment.getUserId())) {
+        // Validar si el usuario es Admin o Teacher
+        if (!userService.isAdminOrTeacher(testAssignment.getUserId())) {
             response.put("success", false);
             response.put("message", "No se puede crear el TestAssignment porque el usuario no es Admin o Teacher");
             return ResponseEntity.badRequest().body(response);
         }
-
-        
 
         try {
             TestAssignment createdTest = testAssignmentService.save(testAssignment);
@@ -94,20 +92,23 @@ public class TestAssignmentsController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<Map<String, Object>> updateTest(@RequestBody TestAssignment testAssignment) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateTestAssignment(@PathVariable Long id, @RequestBody TestAssignment testAssignment) {
         Map<String, Object> response = new HashMap<>();
-        try {
-            TestAssignment updatedTest = testAssignmentService.update(testAssignment);
-            response.put("success", true);
-            response.put("message", "Test actualizado exitosamente");
-            response.put("data", updatedTest);
-            return ResponseEntity.ok(response);
-        } catch ( RuntimeException e) {
+
+        Optional<TestAssignment> existingTestAssignment = testAssignmentService.findById(id);
+        if (!existingTestAssignment.isPresent()) {
             response.put("success", false);
-            response.put("message", e.getMessage());
+            response.put("message", "TestAssignment no encontrado");
             return ResponseEntity.badRequest().body(response);
         }
-    }
 
+        TestAssignment updatedTestAssignment = existingTestAssignment.get();
+        updatedTestAssignment.setReviewComplete(testAssignment.getReviewComplete());
+
+        TestAssignment savedTestAssignment = testAssignmentService.save(updatedTestAssignment);
+        response.put("success", true);
+        response.put("data", savedTestAssignment);
+        return ResponseEntity.ok(response);
+    }
 }
