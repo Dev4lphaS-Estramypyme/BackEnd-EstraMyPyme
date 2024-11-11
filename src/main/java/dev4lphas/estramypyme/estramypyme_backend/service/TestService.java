@@ -1,14 +1,10 @@
 package dev4lphas.estramypyme.estramypyme_backend.service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
 import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
@@ -18,6 +14,11 @@ public class TestService {
 
     @Autowired
     private TestRepository TestRepository;
+
+    public boolean isReviewed(Long testId) {
+        Test test = TestRepository.findById(testId).orElse(null);
+        return test != null && test.getIsReview();
+    }
 
     public List<Test> findAll() {
         return TestRepository.findAll();
@@ -62,4 +63,7 @@ public class TestService {
         }
         return TestRepository.save(test);
     }
+
+   
+
 }
