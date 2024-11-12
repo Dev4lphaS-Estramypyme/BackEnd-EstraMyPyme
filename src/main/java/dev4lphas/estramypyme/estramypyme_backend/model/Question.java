@@ -2,8 +2,7 @@ package dev4lphas.estramypyme.estramypyme_backend.model;
 
 
 import java.time.LocalDate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity

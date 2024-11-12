@@ -2,30 +2,36 @@ package dev4lphas.estramypyme.estramypyme_backend.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
+import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
+import dev4lphas.estramypyme.estramypyme_backend.repository.TestQuestionRepository;
 
 @Service
 public class TestService {
 
     @Autowired
-    private TestRepository TestRepository;
+    private TestRepository testRepository;
+
+    @Autowired
+    private TestQuestionRepository testQuestionRepository;
 
     public boolean isReviewed(Long testId) {
-        Test test = TestRepository.findById(testId).orElse(null);
+        Test test = testRepository.findById(testId).orElse(null);
         return test != null && test.getIsReview();
     }
 
     public List<Test> findAll() {
-        return TestRepository.findAll();
+        return testRepository.findAll();
     }
 
     public List<Test> findByCompanyId(Long companyId) {
-        return TestRepository.findByCompanyId(companyId);
+        return testRepository.findByCompanyId(companyId);
     }
 
     public Test save(Test test) {
@@ -34,7 +40,7 @@ public class TestService {
             test.setIsReview(false);
         }
 
-        List<Test> existingTest = TestRepository.findByCompanyId(test.getCompanyId());
+        List<Test> existingTest = testRepository.findByCompanyId(test.getCompanyId());
         if (!existingTest.isEmpty()) {
             // Verificar si el Review más reciente tiene menos de 6 meses
             Test latestTest = existingTest.get(0);
@@ -49,21 +55,39 @@ public class TestService {
             }
         }
 
-        return TestRepository.save(test);
+        return testRepository.save(test);
     }
-   
 
     public void deleteById(Long id) {
-        TestRepository.deleteById(id);
+        testRepository.deleteById(id);
     }
 
     public Test update(Test test) {
         if (test.getId() == null) {
             throw new IllegalArgumentException("El ID del Test no puede ser nulo para actualizar");
         }
-        return TestRepository.save(test);
+        return testRepository.save(test);
     }
 
-   
+    // Métodos para TestQuestion
+    public TestQuestion saveTestQuestion(TestQuestion testQuestion) {
+        return testQuestionRepository.save(testQuestion);
+    }
 
+    public List<TestQuestion> findTestQuestionsByTestId(Long testId) {
+        return testQuestionRepository.findByTestId(testId);
+    }
+
+    public Optional<TestQuestion> findTestQuestionById(Long id) {
+        return testQuestionRepository.findTestQuestionById(id);
+    }
+
+    public void deleteTestQuestionById(Long id) {
+        testQuestionRepository.deleteById(id);
+    }
+
+    // Método para obtener preguntas activas
+    public List<TestQuestion> findActiveQuestions() {
+        return testQuestionRepository.findByActiveTrue();
+    }
 }

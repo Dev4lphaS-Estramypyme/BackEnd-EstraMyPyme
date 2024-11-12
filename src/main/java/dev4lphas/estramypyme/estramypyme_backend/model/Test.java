@@ -1,11 +1,6 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
-
 import jakarta.persistence.*;
-
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -59,5 +54,3 @@ public class Test {
         this.date = date;
     }
 }
-
-

@@ -7,14 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.TestAssignment;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestAssignmentService;
@@ -39,7 +32,7 @@ public class TestAssignmentsController {
         return testAssignmentService.findAll();
     }
 
-    //Consultar por el company id
+    // Consultar por el company id
     @GetMapping("/{id}")
     public Optional<TestAssignment> getAssigmentById(@PathVariable Long id) {
         return testAssignmentService.findById(id);

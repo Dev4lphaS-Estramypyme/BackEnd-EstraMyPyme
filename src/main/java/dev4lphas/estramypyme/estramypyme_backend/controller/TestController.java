@@ -6,17 +6,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
+import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
+import dev4lphas.estramypyme.estramypyme_backend.service.TestQuestionService;
 
 @RestController
 @RequestMapping("/test")
@@ -25,12 +20,15 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private TestQuestionService testQuestionService;
+
     @GetMapping
     public List<Test> getAllReviews() {
         return testService.findAll();
     }
 
-    //Consultar por el company id
+    // Consultar por el company id
     @GetMapping("/{companyId}")
     public List<Test> getReviewsByCompanyId(@PathVariable Long companyId) {
         return testService.findByCompanyId(companyId);
@@ -41,9 +39,20 @@ public class TestController {
     public ResponseEntity<Map<String, Object>> createTest(@RequestBody Test test) {
         Map<String, Object> response = new HashMap<>();
         try {
+            // Guardar el test
             Test createdTest = testService.save(test);
+
+            // Obtener las preguntas activas
+            List<TestQuestion> activeQuestions = testQuestionService.findActiveQuestions();
+
+            // Asociar las preguntas activas con el test
+            for (TestQuestion question : activeQuestions) {
+                question.setTest(createdTest);
+                testQuestionService.saveTestQuestion(question);
+            }
+
             response.put("success", true);
-            response.put("message", "Test creado exitosamente");
+            response.put("message", "Test creado exitosamente con preguntas activas asociadas");
             response.put("data", createdTest);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -77,11 +86,26 @@ public class TestController {
             response.put("message", "Test actualizado exitosamente");
             response.put("data", updatedTest);
             return ResponseEntity.ok(response);
-        } catch ( RuntimeException e) {
+        } catch (RuntimeException e) {
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }
 
+    // Obtener preguntas asociadas a un test
+    @GetMapping("/{testId}/questions")
+    public ResponseEntity<Map<String, Object>> getQuestionsByTestId(@PathVariable Long testId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<TestQuestion> questions = testQuestionService.findTestQuestionsByTestId(testId);
+            response.put("success", true);
+            response.put("data", questions);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }

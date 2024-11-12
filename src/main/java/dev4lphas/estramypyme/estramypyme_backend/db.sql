@@ -1,10 +1,5 @@
--- Active: 1730168807971@@bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com@3306
-/* conexion al servidor
-Host: bex8rslfxuyzyfudg6hk-mysql.services.clever-cloud.com
-Database: bex8rslfxuyzyfudg6hk
-User: umjcsvke5lr7svzt
-Password: m9IRespcSBvvmEWpCxYq
-Port: 3306 */
+CREATE DATABASE backnodo;
+
 
 -- Tabla de usuarios
 CREATE TABLE users (

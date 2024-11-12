@@ -9,14 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.User;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
@@ -24,7 +17,7 @@ import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
 
 @RestController
 @RequestMapping("api/users")
-public class userController {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -32,13 +25,13 @@ public class userController {
     @Autowired
     private UserRepository userRepository;
 
-    // Listar todos los usuario.
+    // Listar todos los usuarios.
     @GetMapping("")
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
-    // Busqueda de cualquier usuario por id.
+    // Búsqueda de cualquier usuario por id.
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         User user = userService.getUserById(id);
@@ -49,7 +42,7 @@ public class userController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    // Busqueda de admin por correo.
+    // Búsqueda de admin por correo.
     @GetMapping("/admin/{email}")
     public User getAdminByEmail(@PathVariable String email) {
         return userService.getAdminByEmail(email);
@@ -66,45 +59,17 @@ public class userController {
     }
 
     // Actualizar admin buscando por email.
-    /*
-     * @PutMapping("/admin/update/{email}")
-     * public ResponseEntity<User> updateAdmin(@PathVariable String
-     * email, @RequestBody User user) {
-     * User updateAdmin = userService.updateAdmin(email, user);
-     * 
-     * if (updateAdmin == null)
-     * return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-     * 
-     * return new ResponseEntity<>(updateAdmin, HttpStatus.OK);
-     * }
-     */
-
-/*     @PutMapping("/admin/update/{email}")
-    public ResponseEntity<String> updateAdmin(@PathVariable String email, @RequestBody User user) {
-       User updateAdmin = userService.updateAdmin(email, user);
-   
-       if (updateAdmin == null) {
-           return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                   .body("Admin with email: " + email + " not found.");
-       }
-       userService.updateAdmin(email, user);
-          
-       return ResponseEntity.ok("Admin with email: " + email + " has been updated." + updateAdmin);
-   } */
-
     @PutMapping("/admin/update/{email}")
     public ResponseEntity<?> updateAdmin(@PathVariable String email, @RequestBody User user) {
-        System.out.println(email);
-        User updateAdmin = userService.updateAdmin(email, user);
-
-        if (updateAdmin == null) {
+        User updatedAdmin = userService.updateAdmin(email, user);
+    
+        if (updatedAdmin == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Admin with email: " + email + " not found.");
         }
-        userService.updateAdmin(email, user);
-        
+    
         Map<String, Object> response = new HashMap<>();
-        response.put("updatedAdmin", updateAdmin);
+        response.put("updatedAdmin", updatedAdmin);
         response.put("message", "Admin with email: " + email + " has been updated.");
         return ResponseEntity.ok(response);
     }
@@ -128,10 +93,10 @@ public class userController {
         }
     }
 
-    // Busqueda de Estudiante por correo.
+    // Búsqueda de Estudiante por correo.
     @GetMapping("/student/{email}")
-    public User getStundentByEmail(@PathVariable String email) {
-        return userService.getStundentByEmail(email);
+    public User getStudentByEmail(@PathVariable String email) {
+        return userService.getStudentByEmail(email);
     }
 
     // Creación de student.
@@ -157,13 +122,23 @@ public class userController {
 
     // Actualizar role student buscando por email.
     @PutMapping("/student/role/{email}")
-    public ResponseEntity<User> updateStudentRole(@PathVariable String email, @RequestBody User user) {
-        User updateStudentRole = userService.updateStudentRole(email, user);
-
-        if (updateStudentRole == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(updateStudentRole, HttpStatus.OK);
+    public ResponseEntity<?> updateStudentRole(@PathVariable String email, @RequestBody Map<String, Integer> request) {
+        Integer roleNumber = request.get("rolename");
+        if (roleNumber == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Role number is required.");
+        }
+    
+        try {
+            User updatedStudentRole = userService.updateStudentRole(email, roleNumber);
+            if (updatedStudentRole == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(updatedStudentRole, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // Actualizar active student buscando por email.
@@ -196,7 +171,7 @@ public class userController {
         }
     }
 
-    // Busqueda de Profesor por correo.
+    // Búsqueda de Profesor por correo.
     @GetMapping("/teacher/{email}")
     public User getTeacherByEmail(@PathVariable String email) {
         return userService.getTeacherByEmail(email);
@@ -225,13 +200,23 @@ public class userController {
 
     // Actualizar role teacher buscando por email.
     @PutMapping("/teacher/role/{email}")
-    public ResponseEntity<User> updateTeacherRole(@PathVariable String email, @RequestBody User user) {
-        User updateTeacherRole = userService.updateTeacherRole(email, user);
-
-        if (updateTeacherRole == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(updateTeacherRole, HttpStatus.OK);
+    public ResponseEntity<?> updateTeacherRole(@PathVariable String email, @RequestBody Map<String, Integer> request) {
+        Integer roleNumber = request.get("rolename");
+        if (roleNumber == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Role number is required.");
+        }
+    
+        try {
+            User updatedTeacherRole = userService.updateTeacherRole(email, roleNumber);
+            if (updatedTeacherRole == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(updatedTeacherRole, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // Actualizar active teacher buscando por email.
@@ -263,5 +248,4 @@ public class userController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with ID " + id + " not found.");
         }
     }
-
 }

@@ -1,8 +1,6 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
-
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,8 +14,8 @@ public class TestAssignment {
     private Long testId;
     private Long userId;
     private Boolean reviewCompleted;
-    @Column(updatable = false)
 
+    @Column(updatable = false)
     private LocalDateTime assignmentDate;
 
     public TestAssignment() {
@@ -73,10 +71,4 @@ public class TestAssignment {
         this.assignmentDate = assignmentDate;
     }
 }
-
-
-public class testAssignment  {
-
-    
-    }
 
