@@ -104,3 +104,10 @@ INSERT INTO test_questions (test_id, question_id) VALUES
 (1, 2),
 (2, 1),
 (2, 2);
+
+-- Insertar datos en la tabla de respuestas a las preguntas
+INSERT INTO answers (test_id, question_id, answer) VALUES
+(1, 1, 'Medium'),
+(1, 2, 'Services'),
+(2, 1, 'Small'),
+(2, 2, 'Agriculture');
