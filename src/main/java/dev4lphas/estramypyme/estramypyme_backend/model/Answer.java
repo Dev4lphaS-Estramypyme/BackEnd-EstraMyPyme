@@ -1,4 +1,4 @@
-/* package dev4lphas.estramypyme.estramypyme_backend.model;
+package dev4lphas.estramypyme.estramypyme_backend.model;
 
 import jakarta.persistence.*;
 
@@ -50,4 +50,4 @@ public class Answer {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
-} */
+} 

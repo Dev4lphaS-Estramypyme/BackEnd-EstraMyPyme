@@ -22,3 +22,4 @@ public class TestQuestionController {
         return ResponseEntity.ok(testQuestions);
     }
 }
+
