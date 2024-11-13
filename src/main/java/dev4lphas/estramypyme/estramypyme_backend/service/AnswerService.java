@@ -1,4 +1,4 @@
-/* package dev4lphas.estramypyme.estramypyme_backend.service;
+package dev4lphas.estramypyme.estramypyme_backend.service;
 
 import java.util.List;
 
@@ -24,4 +24,4 @@ public class AnswerService {
     public void deleteById(Long id) {
         answerRepository.deleteById(id);
     }
-} */
+}

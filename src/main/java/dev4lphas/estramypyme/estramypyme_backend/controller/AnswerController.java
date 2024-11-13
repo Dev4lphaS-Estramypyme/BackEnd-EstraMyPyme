@@ -1,4 +1,4 @@
-/* package dev4lphas.estramypyme.estramypyme_backend.controller;
+package dev4lphas.estramypyme.estramypyme_backend.controller;
 
 import java.util.List;
 
@@ -34,5 +34,3 @@ public class AnswerController {
         return ResponseEntity.noContent().build();
     }
 }
-
- */

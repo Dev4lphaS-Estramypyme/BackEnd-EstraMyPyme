@@ -26,17 +26,7 @@ public class QuestionController {
         return questionService.getQuestions();
     }
 
-    // Buscar pregunta por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
-        Question question = questionService.findQuestionById(id);
-        if (question == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(question, HttpStatus.OK);
-    }
-
-    // Creación de Question
+    // Creación de Question.
     @PostMapping("/create")
     public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
         Question newQuestion = questionService.createQuestion(question);
@@ -68,12 +58,8 @@ public class QuestionController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
-        try {
-            questionService.deleteQuestionById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        questionService.deleteQuestionById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/deletebyid/{id}")
