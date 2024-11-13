@@ -8,23 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
-import dev4lphas.estramypyme.estramypyme_backend.repository.TestQuestionRepository;
 
 @Service
 public class TestService {
 
     @Autowired
     private TestRepository testRepository;
-
-    @Autowired
-    private TestQuestionRepository testQuestionRepository;
-
-    public boolean isReviewed(Long testId) {
-        Test test = testRepository.findById(testId).orElse(null);
-        return test != null && test.getIsReview();
-    }
 
     public List<Test> findAll() {
         return testRepository.findAll();
@@ -59,6 +49,9 @@ public class TestService {
     }
 
     public void deleteById(Long id) {
+        if (!testRepository.existsById(id)) {
+            throw new IllegalArgumentException("Test no encontrado con id: " + id);
+        }
         testRepository.deleteById(id);
     }
 
@@ -66,28 +59,19 @@ public class TestService {
         if (test.getId() == null) {
             throw new IllegalArgumentException("El ID del Test no puede ser nulo para actualizar");
         }
+        if (!testRepository.existsById(test.getId())) {
+            throw new IllegalArgumentException("Test no encontrado con id: " + test.getId());
+        }
         return testRepository.save(test);
     }
 
-    // Métodos para TestQuestion
-    public TestQuestion saveTestQuestion(TestQuestion testQuestion) {
-        return testQuestionRepository.save(testQuestion);
+    public Test findById(Long id) {
+        return testRepository.findById(id).orElse(null);
     }
 
-    public List<TestQuestion> findTestQuestionsByTestId(Long testId) {
-        return testQuestionRepository.findByTestId(testId);
-    }
-
-    public Optional<TestQuestion> findTestQuestionById(Long id) {
-        return testQuestionRepository.findTestQuestionById(id);
-    }
-
-    public void deleteTestQuestionById(Long id) {
-        testQuestionRepository.deleteById(id);
-    }
-
-    // Método para obtener preguntas activas
-    public List<TestQuestion> findActiveQuestions() {
-        return testQuestionRepository.findByActiveTrue();
+    public boolean isReviewed(Long testId) {
+        return testRepository.findById(testId)
+                             .map(Test::isReviewed)
+                             .orElse(false);
     }
 }

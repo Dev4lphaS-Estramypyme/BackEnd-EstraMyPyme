@@ -1,9 +1,9 @@
-package dev4lphas.estramypyme.estramypyme_backend.model;
+/* package dev4lphas.estramypyme.estramypyme_backend.model;
 
 import jakarta.persistence.*;
 
 @Entity
-public class TestQuestion {
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,6 +15,8 @@ public class TestQuestion {
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
+
+    private String answer;
 
     // Getters y Setters
     public Long getId() {
@@ -40,4 +42,12 @@ public class TestQuestion {
     public void setQuestion(Question question) {
         this.question = question;
     }
-}
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+} */

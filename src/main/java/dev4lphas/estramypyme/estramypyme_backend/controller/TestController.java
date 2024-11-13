@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
-import dev4lphas.estramypyme.estramypyme_backend.service.TestQuestionService;
 
 @RestController
 @RequestMapping("/test")
@@ -19,9 +17,6 @@ public class TestController {
 
     @Autowired
     private TestService testService;
-
-    @Autowired
-    private TestQuestionService testQuestionService;
 
     @GetMapping
     public List<Test> getAllReviews() {
@@ -39,20 +34,9 @@ public class TestController {
     public ResponseEntity<Map<String, Object>> createTest(@RequestBody Test test) {
         Map<String, Object> response = new HashMap<>();
         try {
-            // Guardar el test
             Test createdTest = testService.save(test);
-
-            // Obtener las preguntas activas
-            List<TestQuestion> activeQuestions = testQuestionService.findActiveQuestions();
-
-            // Asociar las preguntas activas con el test
-            for (TestQuestion question : activeQuestions) {
-                question.setTest(createdTest);
-                testQuestionService.saveTestQuestion(question);
-            }
-
             response.put("success", true);
-            response.put("message", "Test creado exitosamente con preguntas activas asociadas");
+            response.put("message", "Test creado exitosamente");
             response.put("data", createdTest);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -70,6 +54,10 @@ public class TestController {
             response.put("success", true);
             response.put("message", "Test eliminado con éxito");
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(response);
         } catch (RuntimeException e) {
             response.put("success", false);
             response.put("message", e.getMessage());
@@ -86,6 +74,10 @@ public class TestController {
             response.put("message", "Test actualizado exitosamente");
             response.put("data", updatedTest);
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(404).body(response);
         } catch (RuntimeException e) {
             response.put("success", false);
             response.put("message", e.getMessage());
@@ -93,19 +85,17 @@ public class TestController {
         }
     }
 
-    // Obtener preguntas asociadas a un test
-    @GetMapping("/{testId}/questions")
-    public ResponseEntity<Map<String, Object>> getQuestionsByTestId(@PathVariable Long testId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getTestById(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
-        try {
-            List<TestQuestion> questions = testQuestionService.findTestQuestionsByTestId(testId);
-            response.put("success", true);
-            response.put("data", questions);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
+        Test test = testService.findById(id);
+        if (test == null) {
             response.put("success", false);
-            response.put("message", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            response.put("message", "Test no encontrado con id: " + id);
+            return ResponseEntity.status(404).body(response);
         }
+        response.put("success", true);
+        response.put("data", test);
+        return ResponseEntity.ok(response);
     }
 }

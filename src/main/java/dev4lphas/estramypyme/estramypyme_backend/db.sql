@@ -1,6 +1,5 @@
 CREATE DATABASE backnodo;
 
-
 -- Tabla de usuarios
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,6 +58,16 @@ CREATE TABLE test_questions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     test_id INT NOT NULL,
     question_id INT NOT NULL,
+    FOREIGN KEY (test_id) REFERENCES tests(id),
+    FOREIGN KEY (question_id) REFERENCES questions(id)
+);
+
+-- Tabla de respuestas a las preguntas
+CREATE TABLE answers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    test_id INT NOT NULL,
+    question_id INT NOT NULL,
+    answer TEXT NOT NULL,
     FOREIGN KEY (test_id) REFERENCES tests(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
 );

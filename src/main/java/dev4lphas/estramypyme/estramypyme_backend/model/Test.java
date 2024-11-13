@@ -53,4 +53,9 @@ public class Test {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    // Add the isReviewed method
+    public boolean isReviewed() {
+        return this.isReview != null && this.isReview;
+    }
 }

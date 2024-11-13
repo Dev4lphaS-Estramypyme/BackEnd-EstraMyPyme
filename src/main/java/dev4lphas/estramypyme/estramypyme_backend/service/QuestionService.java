@@ -15,9 +15,14 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    // Listar todos las preguntas
+    // Listar todas las preguntas
     public List<Question> getQuestions() {
         return questionRepository.findAll();
+    }
+
+    // Buscar pregunta por ID
+    public Question findQuestionById(Long id) {
+        return questionRepository.findById(id).orElse(null);
     }
 
     // Creación de Question
@@ -25,25 +30,23 @@ public class QuestionService {
         question.setCreatedAt(LocalDate.now());
         question.setActive(true);
         return questionRepository.save(question);
-
     }
 
-    // Actualizar text question
+    // Actualizar texto de la pregunta
     public Question updateTextQuestion(Long id, Question question) {
         Question existingQuestion = questionRepository.findById(id).orElse(null);
 
         if (existingQuestion == null)
             return null;
 
-        existingQuestion
-                .setQuestion(question.getQuestion() == null ? existingQuestion.getQuestion() : question.getQuestion());
+        existingQuestion.setQuestion(question.getQuestion() == null ? existingQuestion.getQuestion() : question.getQuestion());
         existingQuestion.setCreatedAt(existingQuestion.getCreatedAt());
         existingQuestion.setActive(existingQuestion.getActive());
 
         return questionRepository.save(existingQuestion);
     }
 
-    // Actualizar status question
+    // Actualizar estado de la pregunta
     public Question statusQuestion(Long id, Question question) {
         Question existingQuestion = questionRepository.findById(id).orElse(null);
 
@@ -60,5 +63,4 @@ public class QuestionService {
     public void deleteQuestionById(Long id) {
         questionRepository.deleteById(id);
     }
-
 }
