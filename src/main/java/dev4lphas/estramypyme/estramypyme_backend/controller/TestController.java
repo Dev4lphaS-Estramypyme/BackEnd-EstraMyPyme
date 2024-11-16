@@ -5,38 +5,42 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
+import dev4lphas.estramypyme.estramypyme_backend.model.Question;
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
+import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/tests")
 public class TestController {
 
     @Autowired
     private TestService testService;
 
-    @GetMapping
-    public List<Test> getAllReviews() {
-        return testService.findAll();
-    }
-
-    // Consultar por el company id
     @GetMapping("/{companyId}")
-    public List<Test> getReviewsByCompanyId(@PathVariable Long companyId) {
-        return testService.findByCompanyId(companyId);
+    public List<Test> getTestsByCompanyId(@PathVariable Long companyId) {
+        return testService.findTestsByCompanyId(companyId);
     }
 
-    // Validar si se pudo crear el test y sino devolver el mensaje de error al front
     @PostMapping
     public ResponseEntity<Map<String, Object>> createTest(@RequestBody Test test) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Test createdTest = testService.save(test);
+            Test createdTest = testService.saveTest(test);
+            List<Question> activeQuestions = testService.findActiveQuestions();
+            for (Question question : activeQuestions) {
+                TestQuestion testQuestion = new TestQuestion();
+                testQuestion.setTest(createdTest);
+                testQuestion.setQuestion(question);
+                testService.saveTestQuestion(testQuestion);
+            }
             response.put("success", true);
-            response.put("message", "Test creado exitosamente");
+            response.put("message", "Test creado exitosamente con preguntas activas");
             response.put("data", createdTest);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -46,11 +50,11 @@ public class TestController {
         }
     }
 
-    @DeleteMapping("/deleteById/{id}")
-    public ResponseEntity<Map<String, Object>> deleteTest(@PathVariable Long id) {
+    @DeleteMapping("/deleteByIdAndCompanyId/{id}/{companyId}")
+    public ResponseEntity<Map<String, Object>> deleteTestByIdAndCompanyId(@PathVariable Long id, @PathVariable Long companyId) {
         Map<String, Object> response = new HashMap<>();
         try {
-            testService.deleteById(id);
+            testService.deleteTestByIdAndCompanyId(id, companyId);
             response.put("success", true);
             response.put("message", "Test eliminado con éxito");
             return ResponseEntity.ok(response);
@@ -69,7 +73,7 @@ public class TestController {
     public ResponseEntity<Map<String, Object>> updateTest(@RequestBody Test test) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Test updatedTest = testService.update(test);
+            Test updatedTest = testService.updateTest(test);
             response.put("success", true);
             response.put("message", "Test actualizado exitosamente");
             response.put("data", updatedTest);
@@ -85,18 +89,46 @@ public class TestController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getTestById(@PathVariable Long id) {
+    @GetMapping("/answers/test/{testId}/question/{questionId}")
+    public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
+        List<Answer> answers = testService.findAnswersByTestIdAndQuestionId(testId, questionId);
+        return ResponseEntity.ok(answers);
+    }
+
+    @PostMapping("/answers")
+    public ResponseEntity<Map<String, Object>> createAnswer(@RequestBody Answer answer) {
         Map<String, Object> response = new HashMap<>();
-        Test test = testService.findById(id);
-        if (test == null) {
+        try {
+            List<Answer> existingAnswers = testService.findAnswersByTestIdAndQuestionId(answer.getTest().getId(), answer.getQuestion().getId());
+            if (!existingAnswers.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Ya existe una respuesta para esta pregunta en este test. Elimina la respuesta existente antes de agregar una nueva.");
+                return ResponseEntity.badRequest().body(response);
+            }
+            Answer createdAnswer = testService.saveAnswer(answer);
+            response.put("success", true);
+            response.put("message", "Respuesta creada exitosamente");
+            response.put("data", createdAnswer);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (RuntimeException e) {
             response.put("success", false);
-            response.put("message", "Test no encontrado con id: " + id);
-            return ResponseEntity.status(404).body(response);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
-        response.put("success", true);
-        response.put("data", test);
-        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/answers/test/{testId}/question/{questionId}")
+    public ResponseEntity<Map<String, Object>> deleteAnswerByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            testService.deleteAnswersByTestIdAndQuestionId(testId, questionId);
+            response.put("success", true);
+            response.put("message", "Respuestas eliminadas con éxito");
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
-
