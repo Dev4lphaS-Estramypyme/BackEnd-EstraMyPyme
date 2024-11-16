@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-public class TestQuestion {
+public class tempTestQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

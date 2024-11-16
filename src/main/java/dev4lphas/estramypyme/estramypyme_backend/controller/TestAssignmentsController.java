@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev4lphas.estramypyme.estramypyme_backend.model.TestAssignment;
+import dev4lphas.estramypyme.estramypyme_backend.model.tempTestAssignment;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestAssignmentService;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
-import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
+import dev4lphas.estramypyme.estramypyme_backend.service.tempUserService;
 
 @RestController
 @RequestMapping("/testAssignments")
@@ -32,22 +32,22 @@ public class TestAssignmentsController {
     private TestService testService;
 
     @Autowired
-    private UserService userService;
+    private tempUserService userService;
 
     @GetMapping
-    public List<TestAssignment> getAllReviews() {
+    public List<tempTestAssignment> getAllReviews() {
         return testAssignmentService.findAll();
     }
 
     //Consultar por el company id
     @GetMapping("/{id}")
-    public Optional<TestAssignment> getAssigmentById(@PathVariable Long id) {
+    public Optional<tempTestAssignment> getAssigmentById(@PathVariable Long id) {
         return testAssignmentService.findById(id);
     }
 
     // Validar si se pudo crear el test y sino devolver el mensaje de error al front
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createTest(@RequestBody TestAssignment testAssignment) {
+    public ResponseEntity<Map<String, Object>> createTest(@RequestBody tempTestAssignment testAssignment) {
         Map<String, Object> response = new HashMap<>();
 
         // Validar si is_reviewed en la tabla test está en false
@@ -65,7 +65,7 @@ public class TestAssignmentsController {
         }
 
         try {
-            TestAssignment createdTest = testAssignmentService.save(testAssignment);
+            tempTestAssignment createdTest = testAssignmentService.save(testAssignment);
             response.put("success", true);
             response.put("message", "Test creado exitosamente");
             response.put("data", createdTest);
@@ -93,20 +93,20 @@ public class TestAssignmentsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> updateTestAssignment(@PathVariable Long id, @RequestBody TestAssignment testAssignment) {
+    public ResponseEntity<Map<String, Object>> updateTestAssignment(@PathVariable Long id, @RequestBody tempTestAssignment testAssignment) {
         Map<String, Object> response = new HashMap<>();
 
-        Optional<TestAssignment> existingTestAssignment = testAssignmentService.findById(id);
+        Optional<tempTestAssignment> existingTestAssignment = testAssignmentService.findById(id);
         if (!existingTestAssignment.isPresent()) {
             response.put("success", false);
             response.put("message", "TestAssignment no encontrado");
             return ResponseEntity.badRequest().body(response);
         }
 
-        TestAssignment updatedTestAssignment = existingTestAssignment.get();
+        tempTestAssignment updatedTestAssignment = existingTestAssignment.get();
         updatedTestAssignment.setReviewComplete(testAssignment.getReviewComplete());
 
-        TestAssignment savedTestAssignment = testAssignmentService.save(updatedTestAssignment);
+        tempTestAssignment savedTestAssignment = testAssignmentService.save(updatedTestAssignment);
         response.put("success", true);
         response.put("data", savedTestAssignment);
         return ResponseEntity.ok(response);

@@ -6,28 +6,28 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev4lphas.estramypyme.estramypyme_backend.model.TestAssignment;
-import dev4lphas.estramypyme.estramypyme_backend.repository.TestAssignmentRepository;
+import dev4lphas.estramypyme.estramypyme_backend.model.tempTestAssignment;
+import dev4lphas.estramypyme.estramypyme_backend.repository.tempTestAssignmentRepository;
 
 @Service
 public class TestAssignmentService {
 
     @Autowired
-    private TestAssignmentRepository TestAssignmentRepository;
+    private tempTestAssignmentRepository TestAssignmentRepository;
     
-        public List<TestAssignment> findAll() {
+        public List<tempTestAssignment> findAll() {
             return TestAssignmentRepository.findAll();
         }
     
-        public List<TestAssignment> findByTestId(Long testId) {
+        public List<tempTestAssignment> findByTestId(Long testId) {
             return TestAssignmentRepository.findByTestId(testId);
         }
     
-        public Optional<TestAssignment> findById(Long Id) {
+        public Optional<tempTestAssignment> findById(Long Id) {
             return TestAssignmentRepository.findById(Id);
         }
     
-        public TestAssignment save(TestAssignment testAssignment) {
+        public tempTestAssignment save(tempTestAssignment testAssignment) {
             // Asegurarse de que isReview sea false al crear una nueva Review
             if (testAssignment.getId() == null) {
                 testAssignment.setReviewComplete(false);
@@ -40,7 +40,7 @@ public class TestAssignmentService {
             TestAssignmentRepository.deleteById(id);
         }
     
-       public TestAssignment update(TestAssignment testAssignment) {
+       public tempTestAssignment update(tempTestAssignment testAssignment) {
             if (testAssignment.getId() == null) {
                 throw new IllegalArgumentException("El ID del Test no puede ser nulo para actualizar");
             }

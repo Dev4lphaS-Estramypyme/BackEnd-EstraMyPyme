@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "test_assignments")
-public class TestAssignment {
+public class tempTestAssignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class TestAssignment {
 
     private LocalDateTime assignmentDate;
 
-    public TestAssignment() {
+    public tempTestAssignment() {
         this.reviewCompleted = false; // Establecer valor por defecto en el constructor
     }
 
