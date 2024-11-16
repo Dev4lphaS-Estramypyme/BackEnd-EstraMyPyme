@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.User;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
-import dev4lphas.estramypyme.estramypyme_backend.service.tempUserService;
+import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
 
 
 @RestController
 @RequestMapping("api/users")
-public class tempUserController {
+public class UserController {
 
     @Autowired
-    private tempUserService userService;
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;

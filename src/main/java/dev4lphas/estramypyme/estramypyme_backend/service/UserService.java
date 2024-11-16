@@ -11,7 +11,7 @@ import dev4lphas.estramypyme.estramypyme_backend.model.User.RoleName;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
 
 @Service
-public class tempUserService {
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
