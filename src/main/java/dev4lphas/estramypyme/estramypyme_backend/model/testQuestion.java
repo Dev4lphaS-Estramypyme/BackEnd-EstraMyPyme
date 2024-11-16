@@ -2,6 +2,7 @@ package dev4lphas.estramypyme.estramypyme_backend.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 public class TestQuestion {
     @Id
