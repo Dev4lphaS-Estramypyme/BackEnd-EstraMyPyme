@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
-import dev4lphas.estramypyme.estramypyme_backend.model.Question;
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
 import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
+import dev4lphas.estramypyme.estramypyme_backend.repository.TestQuestionRepository;
+import dev4lphas.estramypyme.estramypyme_backend.repository.AnswerRepository;
 
 @Service
 public class TestService {
@@ -17,21 +18,27 @@ public class TestService {
     @Autowired
     private TestRepository testRepository;
 
+    @Autowired
+    private TestQuestionRepository testQuestionRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
+
     // Métodos para Test
     public List<Test> findAllTests() {
-        return testRepository.findAllTests();
+        return testRepository.findAll();
     }
 
     public List<Test> findTestsByCompanyId(Long companyId) {
-        return testRepository.findTestsByCompanyId(companyId);
+        return testRepository.findByCompanyId(companyId);
     }
 
     public Test saveTest(Test test) {
-        return testRepository.saveTest(test);
+        return testRepository.save(test);
     }
 
     public Test updateTest(Test test) {
-        return testRepository.updateTest(test);
+        return testRepository.save(test);
     }
 
     public Test findTestById(Long id) {
@@ -55,38 +62,33 @@ public class TestService {
 
     // Métodos para TestQuestion
     public List<TestQuestion> findTestQuestionsByTestId(Long testId) {
-        return testRepository.findTestQuestionsByTestId(testId);
+        return testQuestionRepository.findByTestId(testId);
     }
 
     public void saveTestQuestion(TestQuestion testQuestion) {
-        testRepository.saveTestQuestion(testQuestion);
-    }
-
-    // Métodos para Question
-    public List<Question> findActiveQuestions() {
-        return testRepository.findActiveQuestions();
+        testQuestionRepository.save(testQuestion);
     }
 
     // Métodos para Answer
     public List<Answer> findAnswersByTestIdAndQuestionId(Long testId, Long questionId) {
-        return testRepository.findAnswersByTestIdAndQuestionId(testId, questionId);
+        return answerRepository.findByTestIdAndQuestionId(testId, questionId);
     }
 
     public Answer saveAnswer(Answer answer) {
-        return testRepository.saveAnswer(answer);
+        return answerRepository.save(answer);
     }
 
     public void deleteAnswerById(Long id) {
-        testRepository.deleteAnswerById(id);
+        answerRepository.deleteById(id);
     }
 
     public void deleteAnswersByTestIdAndQuestionId(Long testId, Long questionId) {
-        List<Answer> answers = testRepository.findAnswersByTestIdAndQuestionId(testId, questionId);
-        testRepository.deleteAll(answers);
+        List<Answer> answers = answerRepository.findByTestIdAndQuestionId(testId, questionId);
+        answerRepository.deleteAll(answers);
     }
 
     public void deleteAllAnswersByTestId(Long testId) {
-        List<Answer> answers = testRepository.findByTestId(testId);
-        testRepository.deleteAll(answers);
+        List<Answer> answers = answerRepository.findByTestId(testId);
+        answerRepository.deleteAll(answers);
     }
 }

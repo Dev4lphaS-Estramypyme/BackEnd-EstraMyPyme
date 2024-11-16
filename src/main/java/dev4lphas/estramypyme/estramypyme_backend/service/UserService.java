@@ -2,7 +2,6 @@ package dev4lphas.estramypyme.estramypyme_backend.service;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -139,15 +138,15 @@ public class UserService {
     }
 
     public RoleName convertToRoleName(int roleNumber) {
-    switch (roleNumber) {
-        case 0:
-            return RoleName.Admin;
-        case 1:
-            return RoleName.Student;
-        case 2:
-            return RoleName.Teacher;
-        default:
-            throw new IllegalArgumentException("Invalid role number: " + roleNumber);
+        switch (roleNumber) {
+            case 0:
+                return RoleName.Admin;
+            case 1:
+                return RoleName.Student;
+            case 2:
+                return RoleName.Teacher;
+            default:
+                throw new IllegalArgumentException("Invalid role number: " + roleNumber);
+        }
     }
-}
 }

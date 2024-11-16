@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
-import dev4lphas.estramypyme.estramypyme_backend.model.Question;
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
 import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
@@ -32,15 +31,9 @@ public class TestController {
         Map<String, Object> response = new HashMap<>();
         try {
             Test createdTest = testService.saveTest(test);
-            List<Question> activeQuestions = testService.findActiveQuestions();
-            for (Question question : activeQuestions) {
-                TestQuestion testQuestion = new TestQuestion();
-                testQuestion.setTest(createdTest);
-                testQuestion.setQuestion(question);
-                testService.saveTestQuestion(testQuestion);
-            }
+            // Aquí puedes agregar la lógica para asociar preguntas al test si es necesario
             response.put("success", true);
-            response.put("message", "Test creado exitosamente con preguntas activas");
+            response.put("message", "Test creado exitosamente");
             response.put("data", createdTest);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {

@@ -1,8 +1,9 @@
+-- Active: 1731797351372@@b4tjbar7sfncvjdq7u4t-mysql.services.clever-cloud.com@3306
 CREATE DATABASE backnodo;
 
 -- Tabla de usuarios
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(255),
@@ -12,8 +13,8 @@ CREATE TABLE users (
 
 -- Tabla principal para los usuarios de empresas (clientes)
 CREATE TABLE users_companies (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    identification_number INT NOT NULL,  -- Cédula o NIT
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    identification_number BIGINT NOT NULL,  -- Cédula o NIT
     name_or_business_name VARCHAR(255) NOT NULL,  -- Nombre o Razón Social
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -27,8 +28,8 @@ CREATE TABLE users_companies (
 
 -- Tabla de tests realizados por las empresas
 CREATE TABLE tests (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    company_id INT NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    company_id BIGINT NOT NULL,
     test_date DATE,
     is_reviewed BOOLEAN DEFAULT FALSE,  -- Indica si el test ha sido revisado
     FOREIGN KEY (company_id) REFERENCES users_companies(id)
@@ -36,7 +37,7 @@ CREATE TABLE tests (
 
 -- Tabla de preguntas generales
 CREATE TABLE questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     question TEXT NOT NULL,
     created_at DATE,  -- Fecha de creación
     active BOOLEAN DEFAULT TRUE  -- Indica si la pregunta está activa
@@ -44,9 +45,9 @@ CREATE TABLE questions (
 
 -- Tabla de asignaciones de tests a revisores (pueden ser admins, estudiantes o profesores)
 CREATE TABLE test_assignments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    test_id INT NOT NULL,
-    user_id INT NOT NULL,  -- ID del revisor (referencia a la tabla users)
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    test_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,  -- ID del revisor (referencia a la tabla users)
     assignment_date DATE,
     review_completed BOOLEAN DEFAULT FALSE,  -- Indica si el revisor completó la revisión
     FOREIGN KEY (test_id) REFERENCES tests(id),
@@ -55,18 +56,18 @@ CREATE TABLE test_assignments (
 
 -- Tabla de relación entre tests y preguntas
 CREATE TABLE test_questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    test_id INT NOT NULL,
-    question_id INT NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    test_id BIGINT NOT NULL,
+    question_id BIGINT NOT NULL,
     FOREIGN KEY (test_id) REFERENCES tests(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)
 );
 
 -- Tabla de respuestas a las preguntas
 CREATE TABLE answers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    test_id INT NOT NULL,
-    question_id INT NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    test_id BIGINT NOT NULL,
+    question_id BIGINT NOT NULL,
     answer TEXT NOT NULL,
     FOREIGN KEY (test_id) REFERENCES tests(id),
     FOREIGN KEY (question_id) REFERENCES questions(id)

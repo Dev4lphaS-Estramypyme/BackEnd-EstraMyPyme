@@ -2,7 +2,6 @@ package dev4lphas.estramypyme.estramypyme_backend.model;
 
 import jakarta.persistence.*;
 
-
 @Entity
 public class TestQuestion {
     @Id
@@ -10,11 +9,11 @@ public class TestQuestion {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "test_id")
+    @JoinColumn(name = "test_id", nullable = false)
     private Test test;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
     // Getters y Setters

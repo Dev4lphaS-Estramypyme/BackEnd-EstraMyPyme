@@ -1,61 +1,30 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Entity
+@Data
+@Table(name = "tests")
 public class Test {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long companyId;
-    private Boolean isReview;
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private UserCompany company;
 
-    @Column(updatable = false)
-    private LocalDateTime date;
+    @Column(name = "test_date", nullable = false)
+    private LocalDate testDate;
 
-    @PrePersist
-    protected void onCreate() {
-        date = LocalDateTime.now();
-    }
+    @Column(name = "is_reviewed", nullable = false)
+    private Boolean isReviewed = false;
 
-    // Getters y Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
-    }
-
-    public Boolean getIsReview() {
-        return isReview;
-    }
-
-    public void setIsReview(Boolean isReview) {
-        this.isReview = isReview;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    // Add the isReviewed method
-    public boolean isReviewed() {
-        return this.isReview != null && this.isReview;
+    public Boolean isReviewed() {
+        return isReviewed;
     }
 }
