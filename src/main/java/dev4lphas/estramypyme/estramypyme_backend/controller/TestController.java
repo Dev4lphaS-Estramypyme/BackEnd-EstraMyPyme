@@ -84,7 +84,6 @@ public class TestController {
 
     @GetMapping("/answers/test/{testId}/question/{questionId}")
 public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
-    System.out.println("Test ID: " + testId + ", Question ID: " + questionId);  // Log para verificar los valores
     List<Answer> answers = testService.findAnswersByTestIdAndQuestionId(testId, questionId);
     return ResponseEntity.ok(answers);
 }
