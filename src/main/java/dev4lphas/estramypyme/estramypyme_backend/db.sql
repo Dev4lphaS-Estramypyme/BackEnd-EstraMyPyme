@@ -1,5 +1,6 @@
 -- Active: 1731797351372@@b4tjbar7sfncvjdq7u4t-mysql.services.clever-cloud.com@3306
 CREATE DATABASE backnodo;
+USE backnodo;
 
 -- Tabla de usuarios
 CREATE TABLE users (
@@ -14,13 +15,13 @@ CREATE TABLE users (
 -- Tabla principal para los usuarios de empresas (clientes)
 CREATE TABLE users_companies (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    identification_number BIGINT NOT NULL,  -- Cédula o NIT
+    identification_number VARCHAR(255) UNIQUE NOT NULL,  -- Cédula o NIT
     name_or_business_name VARCHAR(255) NOT NULL,  -- Nombre o Razón Social
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     type_user ENUM('Natural', 'Juridico') NOT NULL,  -- Tipos de usuarios
     company_size ENUM('Pequeña', 'Mediana', 'Grande') NOT NULL,  -- Tamaño de la compañía
-    sector ENUM('Sector Agrícola', 'Sector Industrial', 'Sector Servicios', 'Sector Construcción') NOT NULL,  -- Sector de la compañía
+    sector ENUM('Sector_Agrícola', 'Sector_Industrial', 'Sector_Servicios', 'Sector_Construcción') NOT NULL,  -- Sector de la compañía
     registration_date DATE,
     active BOOLEAN DEFAULT TRUE,  -- Indica si el usuario está activo
     is_book_downloaded BOOLEAN DEFAULT FALSE  -- Indica si el libro ha sido descargado
@@ -81,8 +82,8 @@ INSERT INTO users (email, password, name, active, role_name) VALUES
 
 -- Insertar datos en la tabla de usuarios de empresas
 INSERT INTO users_companies (identification_number, name_or_business_name, email, password, type_user, company_size, sector, registration_date, active, is_book_downloaded) VALUES
-(123456789, 'Company A', 'companya@example.com', 'companyapassword', 'Juridico', 'Mediana', 'Sector Servicios', '2023-01-01', TRUE, FALSE),
-(987654321, 'Company B', 'companyb@example.com', 'companybpassword', 'Natural', 'Pequeña', 'Sector Agrícola', '2023-02-01', TRUE, TRUE);
+(123456789, 'Company A', 'companya@example.com', 'companyapassword', 'Juridico', 'Mediana', 'Sector_Servicios', '2023-01-01', TRUE, FALSE),
+(987654321, 'Company B', 'companyb@example.com', 'companybpassword', 'Natural', 'Pequeña', 'Sector_Agrícola', '2023-02-01', TRUE, TRUE);
 
 -- Insertar datos en la tabla de tests
 INSERT INTO tests (company_id, test_date, is_reviewed) VALUES

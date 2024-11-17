@@ -10,7 +10,7 @@ import dev4lphas.estramypyme.estramypyme_backend.model.Test;
 @Repository
 public interface TestRepository extends JpaRepository<Test, Long> {
     // Métodos para Test
-    List<Test> findByCompanyId(Long companyId);
+    List<Test> findByCompany_Id(Long companyId);
     Test findTestById(Long id);
-    Test findTestByIdAndCompanyId(Long id, Long companyId);
+    Test findTestByIdAndCompany_Id(Long id, Long companyId);
 }

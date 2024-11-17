@@ -3,6 +3,7 @@ package dev4lphas.estramypyme.estramypyme_backend.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "answers")
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

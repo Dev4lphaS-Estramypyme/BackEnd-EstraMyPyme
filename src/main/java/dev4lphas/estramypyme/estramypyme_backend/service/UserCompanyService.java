@@ -50,8 +50,6 @@ public class UserCompanyService {
         updatedUserCompany.setCompanySize(usercompany.getCompanySize());
         updatedUserCompany.setSector(usercompany.getSector());
         updatedUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
-        updatedUserCompany.setActive(usercompany.isActive());
-        updatedUserCompany.setBookDownloaded(usercompany.isBookDownloaded());
 
         return usercompanyRepository.save(updatedUserCompany);
     }
@@ -95,16 +93,14 @@ public class UserCompanyService {
         UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
 
-        existingUserCompany.setIdentificationNumber(usercompany.getIdentificationNumber());
-        existingUserCompany.setNameOrBusinessName(usercompany.getNameOrBusinessName());
-        existingUserCompany.setEmail(usercompany.getEmail());
-        existingUserCompany.setPassword(usercompany.getPassword());
-        existingUserCompany.setTypeUser(usercompany.getTypeUser());
-        existingUserCompany.setCompanySize(usercompany.getCompanySize());
-        existingUserCompany.setSector(usercompany.getSector());
-        existingUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
-        existingUserCompany.setActive(usercompany.isActive());
-        existingUserCompany.setBookDownloaded(usercompany.isBookDownloaded());
+                existingUserCompany.setIdentificationNumber(usercompany.getIdentificationNumber());
+                existingUserCompany.setNameOrBusinessName(usercompany.getNameOrBusinessName());
+                existingUserCompany.setEmail(usercompany.getEmail());
+                existingUserCompany.setPassword(usercompany.getPassword());
+                existingUserCompany.setTypeUser(usercompany.getTypeUser());
+                existingUserCompany.setCompanySize(usercompany.getCompanySize());
+                existingUserCompany.setSector(usercompany.getSector());
+                existingUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
 
         return usercompanyRepository.save(existingUserCompany);
     }

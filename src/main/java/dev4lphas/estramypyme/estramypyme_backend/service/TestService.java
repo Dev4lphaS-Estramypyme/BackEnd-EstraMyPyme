@@ -30,7 +30,7 @@ public class TestService {
     }
 
     public List<Test> findTestsByCompanyId(Long companyId) {
-        return testRepository.findByCompanyId(companyId);
+        return testRepository.findByCompany_Id(companyId);
     }
 
     public Test saveTest(Test test) {
@@ -52,7 +52,7 @@ public class TestService {
     }
 
     public void deleteTestByIdAndCompanyId(Long id, Long companyId) {
-        Test test = testRepository.findTestByIdAndCompanyId(id, companyId);
+        Test test = testRepository.findTestByIdAndCompany_Id(id, companyId);
         if (test != null) {
             testRepository.delete(test);
         } else {

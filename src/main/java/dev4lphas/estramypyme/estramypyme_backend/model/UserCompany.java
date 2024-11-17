@@ -1,131 +1,59 @@
 package dev4lphas.estramypyme.estramypyme_backend.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 
 @Entity
-@Table(name = "user_company")
+@Data
+@Table(name = "users_companies")
 public class UserCompany {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "identification_number", length = 255, nullable = false, unique = true)
     private String identificationNumber;
 
-    @Column(nullable = false)
+    @Column(name = "name_or_business_name", length = 255, nullable = false)
     private String nameOrBusinessName;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password", length = 255, nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String typeUser;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_user", nullable = false)
+    private TypeUser typeUser;
 
-    @Column(nullable = false)
-    private String companySize;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "company_size", nullable = false)
+    private CompanySize companySize;
 
-    @Column(nullable = false)
+    @Column(name = "sector", nullable = false)
     private String sector;
 
-    @Column(nullable = false)
-    private String registrationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") // Configura el formato de fecha
+    @Column(name = "registration_date")
+    @Temporal(TemporalType.DATE)
+    private Date registrationDate = new Date();
 
-    @Column(nullable = false)
-    private boolean active;
+    @Column(name = "active", nullable = false)
+    private Boolean active = true;
 
-    @Column(nullable = false)
-    private boolean isBookDownloaded;
+    @Column(name = "is_book_downloaded", nullable = false)
+    private Boolean isBookDownloaded = false;
 
-    // Getters y Setters
-    public Long getId() {
-        return id;
+    // Enumeraciones para los campos de tipo ENUM en la base de datos
+    public enum TypeUser {
+        Natural, Juridico
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIdentificationNumber() {
-        return identificationNumber;
-    }
-
-    public void setIdentificationNumber(String identificationNumber) {
-        this.identificationNumber = identificationNumber;
-    }
-
-    public String getNameOrBusinessName() {
-        return nameOrBusinessName;
-    }
-
-    public void setNameOrBusinessName(String nameOrBusinessName) {
-        this.nameOrBusinessName = nameOrBusinessName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getTypeUser() {
-        return typeUser;
-    }
-
-    public void setTypeUser(String typeUser) {
-        this.typeUser = typeUser;
-    }
-
-    public String getCompanySize() {
-        return companySize;
-    }
-
-    public void setCompanySize(String companySize) {
-        this.companySize = companySize;
-    }
-
-    public String getSector() {
-        return sector;
-    }
-
-    public void setSector(String sector) {
-        this.sector = sector;
-    }
-
-    public String getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(String registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public boolean isBookDownloaded() {
-        return isBookDownloaded;
-    }
-
-    public void setBookDownloaded(boolean isBookDownloaded) {
-        this.isBookDownloaded = isBookDownloaded;
+    public enum CompanySize {
+        Pequeña, Mediana, Grande
     }
 }
