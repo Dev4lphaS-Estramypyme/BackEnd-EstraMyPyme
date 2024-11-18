@@ -26,7 +26,7 @@ public class TestController {
         return testService.findTestsByCompanyId(companyId);
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<Map<String, Object>> createTest(@RequestBody Test test) {
         Map<String, Object> response = new HashMap<>();
         try {

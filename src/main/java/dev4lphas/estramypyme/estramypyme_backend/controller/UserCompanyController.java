@@ -21,12 +21,14 @@ public class UserCompanyController {
 
     // Obtener todas las empresas
     @GetMapping("")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}) // Permite solicitudes desde localhost:4200
     public List<UserCompany> getUsersCompanies() {
         return usercompanyService.getUsersCompanies();
     }
 
     // Obtener una empresa por número de identificación
     @GetMapping("/{identificationNumber}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> getUserCompany(@PathVariable String identificationNumber) {
         Optional<UserCompany> usercompany = usercompanyService.getUserCompanyByIdentificationNumber(identificationNumber);
     
@@ -39,6 +41,7 @@ public class UserCompanyController {
 
     // Crear una nueva empresa
     @PostMapping("")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> createUserCompany(@RequestBody UserCompany usercompany) {
         try {
             UserCompany newUserCompany = usercompanyService.createUserCompany(usercompany);
@@ -50,6 +53,7 @@ public class UserCompanyController {
     
     // Actualizar una empresa existente
     @PutMapping("/edit/{identificationNumber}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> updateUserCompany(@PathVariable String identificationNumber, @RequestBody UserCompany usercompany) {
         try {
             UserCompany updatedUserCompany = usercompanyService.updateUserCompany(identificationNumber, usercompany);
@@ -61,6 +65,7 @@ public class UserCompanyController {
     
     // Cambiar el estado (activo/inactivo) de una empresa
     @PutMapping("/status/{identificationNumber}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> updateStatus(@PathVariable String identificationNumber, @RequestBody String isActiveStr) {
         boolean isActive;
         try {
@@ -82,6 +87,7 @@ public class UserCompanyController {
 
     // Eliminar por identificacion
     @DeleteMapping("/{identificationNumber}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<String> deleteUserCompany(@PathVariable String identificationNumber) {
         try {
             usercompanyService.deleteUserCompanyByIdentificationNumber(identificationNumber);
@@ -93,6 +99,7 @@ public class UserCompanyController {
 
     // Buscar por correo
     @GetMapping("/correo/{email}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> getUserCompanyByEmail(@PathVariable String email) {
         Optional<UserCompany> usercompany = usercompanyService.getUserCompanyByEmail(email);
 
@@ -105,6 +112,7 @@ public class UserCompanyController {
 
     // Eliminar por correo
     @DeleteMapping("/correo/{email}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<String> deleteUserCompanyByEmail(@PathVariable String email) {
         try {
             usercompanyService.deleteUserCompanyByEmail(email);
@@ -116,6 +124,7 @@ public class UserCompanyController {
 
     // Actualizar por correo
     @PutMapping("/edit/correo/{email}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> updateUserCompanyByEmail(@PathVariable String email, @RequestBody UserCompany usercompany) {
         try {
             UserCompany updatedUserCompany = usercompanyService.updateUserCompanyByEmail(email, usercompany);
@@ -127,6 +136,7 @@ public class UserCompanyController {
 
     // Cambiar el estado (activo/inactivo) de una empresa
     @PutMapping("/status/correo/{email}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> updateStatusByEmail(@PathVariable String email, @RequestBody String isActiveStr) {
         if (!isActiveStr.equalsIgnoreCase("true") && !isActiveStr.equalsIgnoreCase("false")) {
             return new ResponseEntity<>("El valor de 'isActive' debe ser 'true' o 'false'.", HttpStatus.BAD_REQUEST);
@@ -136,6 +146,18 @@ public class UserCompanyController {
         
         try {
             UserCompany updatedUserCompany = usercompanyService.updateStatusByEmail(email, isActive);
+            return new ResponseEntity<>(updatedUserCompany, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("La empresa con el correo " + email + " no fue encontrada.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Actualizar el estado de isBookDownloaded por correo
+    @PutMapping("/bookDownloaded/{email}")
+    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+    public ResponseEntity<Object> updateBookDownloadedStatus(@PathVariable String email) {
+        try {
+            UserCompany updatedUserCompany = usercompanyService.updateBookDownloadedStatus(email);
             return new ResponseEntity<>(updatedUserCompany, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("La empresa con el correo " + email + " no fue encontrada.", HttpStatus.NOT_FOUND);
