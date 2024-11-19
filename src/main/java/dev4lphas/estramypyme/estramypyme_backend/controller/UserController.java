@@ -15,9 +15,9 @@ import dev4lphas.estramypyme.estramypyme_backend.model.User;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
 import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
 
-
 @RestController
 @RequestMapping("api/users")
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class UserController {
 
     @Autowired
@@ -28,14 +28,12 @@ public class UserController {
 
     // Listar todos los usuarios.
     @GetMapping("")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}) // Permite solicitudes desde localhost:4200
     public List<User> getUsers() {
         return userService.getUsers();
     }
 
     // Búsqueda de cualquier usuario por id.
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> getUser(@PathVariable Long id) {
         User user = userService.getUserById(id);
 
@@ -47,14 +45,12 @@ public class UserController {
 
     // Búsqueda de admin por correo.
     @GetMapping("/admin/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public User getAdminByEmail(@PathVariable String email) {
         return userService.getAdminByEmail(email);
     }
 
     // Creación de admin.
     @PostMapping("/admin")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> createAdmin(@RequestBody User user) {
         User newAdmin = userService.createAdmin(user);
         if (newAdmin == null) {
@@ -65,7 +61,6 @@ public class UserController {
 
     // Actualizar admin buscando por email.
     @PutMapping("/admin/update/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<?> updateAdmin(@PathVariable String email, @RequestBody User user) {
         User updatedAdmin = userService.updateAdmin(email, user);
     
@@ -82,7 +77,6 @@ public class UserController {
 
     // Eliminación de Admin por id.
     @DeleteMapping("/admin/deleteById/{id}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<String> deleteAdminById(@PathVariable Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
@@ -102,14 +96,12 @@ public class UserController {
 
     // Búsqueda de Estudiante por correo.
     @GetMapping("/student/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public User getStudentByEmail(@PathVariable String email) {
         return userService.getStudentByEmail(email);
     }
 
     // Creación de student.
     @PostMapping("/student")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> createStudent(@RequestBody User user) {
         User newStudent = userService.createStudent(user);
         if (newStudent == null) {
@@ -120,7 +112,6 @@ public class UserController {
 
     // Actualizar student buscando por email.
     @PutMapping("/student/update/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> updateStudent(@PathVariable String email, @RequestBody User user) {
         User updateStudent = userService.updateStudent(email, user);
 
@@ -132,7 +123,6 @@ public class UserController {
 
     // Actualizar role student buscando por email.
     @PutMapping("/student/role/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<?> updateStudentRole(@PathVariable String email, @RequestBody Map<String, Integer> request) {
         Integer roleNumber = request.get("rolename");
         if (roleNumber == null) {
@@ -154,7 +144,6 @@ public class UserController {
 
     // Actualizar active student buscando por email.
     @PutMapping("/student/active/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> updateStudentActive(@PathVariable String email, @RequestBody User user) {
         User updateStudentActive = userService.updateStudentActive(email, user);
 
@@ -166,7 +155,6 @@ public class UserController {
 
     // Eliminación de Student por id.
     @DeleteMapping("/student/deleteById/{id}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<String> deleteStudentById(@PathVariable Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
@@ -186,14 +174,12 @@ public class UserController {
 
     // Búsqueda de Profesor por correo.
     @GetMapping("/teacher/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public User getTeacherByEmail(@PathVariable String email) {
         return userService.getTeacherByEmail(email);
     }
 
     // Creación de teacher.
     @PostMapping("/teacher")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> createTeacher(@RequestBody User user) {
         User newTeacher = userService.createTeacher(user);
         if (newTeacher == null) {
@@ -204,7 +190,6 @@ public class UserController {
 
     // Actualizar teacher buscando por email.
     @PutMapping("/teacher/update/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> updateTeacher(@PathVariable String email, @RequestBody User user) {
         User updateTeacher = userService.updateTeacher(email, user);
 
@@ -216,7 +201,6 @@ public class UserController {
 
     // Actualizar role teacher buscando por email.
     @PutMapping("/teacher/role/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<?> updateTeacherRole(@PathVariable String email, @RequestBody Map<String, Integer> request) {
         Integer roleNumber = request.get("rolename");
         if (roleNumber == null) {
@@ -238,7 +222,6 @@ public class UserController {
 
     // Actualizar active teacher buscando por email.
     @PutMapping("/teacher/active/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<User> updateTeacherActive(@PathVariable String email, @RequestBody User user) {
         User updateTeacherActive = userService.updateTeacherActive(email, user);
 
@@ -250,7 +233,6 @@ public class UserController {
 
     // Eliminación de Teacher por id
     @DeleteMapping("/teacher/deleteById/{id}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<String> deleteTeacherById(@PathVariable Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
@@ -265,6 +247,24 @@ public class UserController {
                     + " because they have related test assignments. But if necessary you can deactivate it ");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with ID " + id + " not found.");
+        }
+    }
+    // Endpoint para manejar el login
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> loginData) {
+        String email = loginData.get("email");
+        String password = loginData.get("password");
+
+        Optional<User> userOptional = userService.getUserByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getPassword().equals(password)) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
     }
 }

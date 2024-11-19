@@ -1,4 +1,4 @@
--- Active: 1731797351372@@b4tjbar7sfncvjdq7u4t-mysql.services.clever-cloud.com@3306
+-- Active: 1731978704887@@bdi5b50qw0wnxcbyvazt-mysql.services.clever-cloud.com@3306@bdi5b50qw0wnxcbyvazt
 CREATE DATABASE backnodo;
 USE backnodo;
 
@@ -113,3 +113,5 @@ INSERT INTO answers (test_id, question_id, answer) VALUES
 (1, 2, 'Services'),
 (2, 1, 'Small'),
 (2, 2, 'Agriculture');
+
+

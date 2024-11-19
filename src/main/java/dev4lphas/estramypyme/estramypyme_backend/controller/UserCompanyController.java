@@ -124,19 +124,14 @@ public class UserCompanyController {
         Optional<UserCompany> usercompany = usercompanyService.getUserCompanyByEmail(email);
 
 
-    if (usercompany.isPresent()) {
-        return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
-    } else {
-        // Devuelves un mensaje con el error y un estado 404
-        return new ResponseEntity<>("Empresa no encontrada con el correo: " + email, HttpStatus.NOT_FOUND);
-
         if (usercompany.isPresent()) {
             return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
         } else {
+            // Devuelves un mensaje con el error y un estado 404
             return new ResponseEntity<>("Empresa no encontrada con el correo: " + email, HttpStatus.NOT_FOUND);
         }
-
     }
+
 
     // Eliminar por correo
     @DeleteMapping("/correo/{email}")
