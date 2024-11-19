@@ -2,10 +2,20 @@ package dev4lphas.estramypyme.estramypyme_backend.controller;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.UserCompany;
 import dev4lphas.estramypyme.estramypyme_backend.service.UserCompanyService;
@@ -21,14 +31,18 @@ public class UserCompanyController {
 
     // Obtener todas las empresas
     @GetMapping("")
+
     @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}) // Permite solicitudes desde localhost:4200
+
     public List<UserCompany> getUsersCompanies() {
         return usercompanyService.getUsersCompanies();
     }
 
     // Obtener una empresa por número de identificación
     @GetMapping("/{identificationNumber}")
+
     @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
     public ResponseEntity<Object> getUserCompany(@PathVariable String identificationNumber) {
         Optional<UserCompany> usercompany = usercompanyService.getUserCompanyByIdentificationNumber(identificationNumber);
     
@@ -41,7 +55,9 @@ public class UserCompanyController {
 
     // Crear una nueva empresa
     @PostMapping("")
+
     @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
     public ResponseEntity<Object> createUserCompany(@RequestBody UserCompany usercompany) {
         try {
             UserCompany newUserCompany = usercompanyService.createUserCompany(usercompany);
@@ -53,7 +69,9 @@ public class UserCompanyController {
     
     // Actualizar una empresa existente
     @PutMapping("/edit/{identificationNumber}")
+
     @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
     public ResponseEntity<Object> updateUserCompany(@PathVariable String identificationNumber, @RequestBody UserCompany usercompany) {
         try {
             UserCompany updatedUserCompany = usercompanyService.updateUserCompany(identificationNumber, usercompany);
@@ -65,7 +83,9 @@ public class UserCompanyController {
     
     // Cambiar el estado (activo/inactivo) de una empresa
     @PutMapping("/status/{identificationNumber}")
+
     @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
     public ResponseEntity<Object> updateStatus(@PathVariable String identificationNumber, @RequestBody String isActiveStr) {
         boolean isActive;
         try {
@@ -103,11 +123,19 @@ public class UserCompanyController {
     public ResponseEntity<Object> getUserCompanyByEmail(@PathVariable String email) {
         Optional<UserCompany> usercompany = usercompanyService.getUserCompanyByEmail(email);
 
+
+    if (usercompany.isPresent()) {
+        return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
+    } else {
+        // Devuelves un mensaje con el error y un estado 404
+        return new ResponseEntity<>("Empresa no encontrada con el correo: " + email, HttpStatus.NOT_FOUND);
+
         if (usercompany.isPresent()) {
             return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Empresa no encontrada con el correo: " + email, HttpStatus.NOT_FOUND);
         }
+
     }
 
     // Eliminar por correo
@@ -164,4 +192,3 @@ public class UserCompanyController {
         }
     }
 }
-
