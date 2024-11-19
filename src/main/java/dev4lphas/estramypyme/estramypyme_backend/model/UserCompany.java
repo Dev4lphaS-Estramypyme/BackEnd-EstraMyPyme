@@ -34,9 +34,8 @@ public class UserCompany {
     @Column(name = "company_size", nullable = false)
     private CompanySize companySize;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "sector", nullable = false)
-    private Sector sector;
+    private String sector;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") // Configura el formato de fecha
     @Column(name = "registration_date")
@@ -56,10 +55,5 @@ public class UserCompany {
 
     public enum CompanySize {
         Pequeña, Mediana, Grande
-    }
-
-    public enum Sector {
-       Sector_Agrícola, Sector_Industrial, Sector_Servicios, Sector_Construccion;
-
     }
 }

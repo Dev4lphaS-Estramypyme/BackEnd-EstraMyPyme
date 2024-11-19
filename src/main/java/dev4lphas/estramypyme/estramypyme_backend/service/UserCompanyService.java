@@ -68,66 +68,49 @@ public class UserCompanyService {
     }
 
     @Transactional
-public void deleteUserCompanyByIdentificationNumber(String identificationNumber) {
-    // Buscar si existe el UserCompany con la identificación
-    Optional<UserCompany> existingUserCompany = usercompanyRepository.findByIdentificationNumber(identificationNumber);
-    // Si no se encuentra, lanzar una excepción
-    if (!existingUserCompany.isPresent()) {
-        throw new RuntimeException("No se encontró ninguna empresa con la identificación " + identificationNumber);
-    }
-    // Si se encuentra, eliminar el UserCompany
-    usercompanyRepository.deleteByIdentificationNumber(identificationNumber);
+    public void deleteUserCompanyByIdentificationNumber(String identificationNumber) {
+        Optional<UserCompany> existingUserCompany = usercompanyRepository.findByIdentificationNumber(identificationNumber);
+        if (!existingUserCompany.isPresent()) {
+            throw new RuntimeException("No se encontró ninguna empresa con la identificación " + identificationNumber);
+        }
+        usercompanyRepository.deleteByIdentificationNumber(identificationNumber);
     }
 
-
-
-     // Buscar empresa por correo
-     public Optional<UserCompany> getUserCompanyByEmail(String email) {
+    public Optional<UserCompany> getUserCompanyByEmail(String email) {
         return usercompanyRepository.findByEmail(email);
     }
-    
-    // Eliminar empresa por correo
+
     @Transactional
     public void deleteUserCompanyByEmail(String email) {
-        // Buscar si existe el UserCompany con la identificación
         Optional<UserCompany> existingUserCompany = usercompanyRepository.findByEmail(email);
-        // Si no se encuentra, lanzar una excepción
         if (!existingUserCompany.isPresent()) {
             throw new RuntimeException("No se encontró ninguna empresa con el correo " + email);
         }
-        // Si se encuentra, eliminar el UserCompany
         usercompanyRepository.deleteByEmail(email);
-        }
+    }
 
-    // Actualizar empresa por correo
     public UserCompany updateUserCompanyByEmail(String email, UserCompany usercompany) {
         UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
-    
-        // Copiar los valores del objeto recibido al existente
-        existingUserCompany.setIdentificationNumber(usercompany.getIdentificationNumber());
-        existingUserCompany.setNameOrBusinessName(usercompany.getNameOrBusinessName());
-        existingUserCompany.setEmail(usercompany.getEmail());
-        existingUserCompany.setPassword(usercompany.getPassword());
-        existingUserCompany.setTypeUser(usercompany.getTypeUser());
-        existingUserCompany.setCompanySize(usercompany.getCompanySize());
-        existingUserCompany.setSector(usercompany.getSector());
-        existingUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
-    
+
+                existingUserCompany.setIdentificationNumber(usercompany.getIdentificationNumber());
+                existingUserCompany.setNameOrBusinessName(usercompany.getNameOrBusinessName());
+                existingUserCompany.setEmail(usercompany.getEmail());
+                existingUserCompany.setPassword(usercompany.getPassword());
+                existingUserCompany.setTypeUser(usercompany.getTypeUser());
+                existingUserCompany.setCompanySize(usercompany.getCompanySize());
+                existingUserCompany.setSector(usercompany.getSector());
+                existingUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
+
         return usercompanyRepository.save(existingUserCompany);
     }
 
     public UserCompany updateStatusByEmail(String email, boolean isActive) {
-        // Usamos orElseThrow para lanzar la excepción si no se encuentra la empresa
         UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
-    
-        // Actualizamos el estado
+
         existingUserCompany.setActive(isActive);
-    
-        // Guardamos el objeto actualizado
+
         return usercompanyRepository.save(existingUserCompany);
     }
-    
-
 }

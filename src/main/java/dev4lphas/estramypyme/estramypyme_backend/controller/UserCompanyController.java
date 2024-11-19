@@ -45,7 +45,6 @@ public class UserCompanyController {
         if (usercompany.isPresent()) {
             return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
         } else {
-            // Devuelves un mensaje con el error y un estado 404
             return new ResponseEntity<>("Empresa no encontrada con el número de identificación: " + identificationNumber, HttpStatus.NOT_FOUND);
         }
     }
@@ -58,7 +57,6 @@ public class UserCompanyController {
             UserCompany newUserCompany = usercompanyService.createUserCompany(usercompany);
             return new ResponseEntity<>(newUserCompany, HttpStatus.CREATED);
         } catch (EntityExistsException e) {
-            // Devuelves un mensaje con el error y un estado 400
             return new ResponseEntity<>("La empresa con el número de identificación " + usercompany.getIdentificationNumber() + " ya existe.", HttpStatus.BAD_REQUEST);
         }
     }
@@ -71,7 +69,6 @@ public class UserCompanyController {
             UserCompany updatedUserCompany = usercompanyService.updateUserCompany(identificationNumber, usercompany);
             return new ResponseEntity<>(updatedUserCompany, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            // Devuelves un mensaje con el error y un estado 404
             return new ResponseEntity<>("La empresa con el número de identificación " + identificationNumber + " no fue encontrada.", HttpStatus.NOT_FOUND);
         }
     }
@@ -80,10 +77,9 @@ public class UserCompanyController {
     @PutMapping("/status/{identificationNumber}")
     @CrossOrigin(origins = "http://localhost:4200", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE })
     public ResponseEntity<Object> updateStatus(@PathVariable String identificationNumber, @RequestBody String isActiveStr) {
-        // Intentamos convertir el valor recibido en un booleano
         boolean isActive;
         try {
-            isActive = Boolean.parseBoolean(isActiveStr);  // Parseamos el valor recibido como String
+            isActive = Boolean.parseBoolean(isActiveStr);
             if (!isActiveStr.equalsIgnoreCase("true") && !isActiveStr.equalsIgnoreCase("false")) {
                 return new ResponseEntity<>("El valor de 'isActive' debe ser 'true' o 'false'.", HttpStatus.BAD_REQUEST);
             }
@@ -98,6 +94,7 @@ public class UserCompanyController {
             return new ResponseEntity<>("La empresa con el número de identificación " + identificationNumber + " no fue encontrada.", HttpStatus.NOT_FOUND);
         }
     }
+
     // Eliminar por identificacion
     @DeleteMapping("/{identificationNumber}")
     public ResponseEntity<String> deleteUserCompany(@PathVariable String identificationNumber) {
@@ -114,13 +111,20 @@ public class UserCompanyController {
     public ResponseEntity<Object> getUserCompanyByEmail(@PathVariable String email) {
         Optional<UserCompany> usercompany = usercompanyService.getUserCompanyByEmail(email);
 
+
     if (usercompany.isPresent()) {
         return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
     } else {
         // Devuelves un mensaje con el error y un estado 404
         return new ResponseEntity<>("Empresa no encontrada con el correo: " + email, HttpStatus.NOT_FOUND);
+
+        if (usercompany.isPresent()) {
+            return new ResponseEntity<>(usercompany.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Empresa no encontrada con el correo: " + email, HttpStatus.NOT_FOUND);
+        }
+
     }
-}
 
     // Eliminar por correo
     @DeleteMapping("/correo/{email}")
