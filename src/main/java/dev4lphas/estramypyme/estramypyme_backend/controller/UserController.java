@@ -12,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.User;
+import dev4lphas.estramypyme.estramypyme_backend.model.UserCompany; // Asegúrate de importar esta clase
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
 import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
+import dev4lphas.estramypyme.estramypyme_backend.service.UserCompanyService; // Asegúrate de importar esta clase también
 
 @RestController
 @RequestMapping("api/users")
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserCompanyService userCompanyService; // Asegúrate de tener esta inyección de dependencia
 
     // Listar todos los usuarios.
     @GetMapping("")
@@ -249,23 +254,39 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with ID " + id + " not found.");
         }
     }
+
     // Endpoint para manejar el login
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String password = loginData.get("password");
-
+    
         Optional<User> userOptional = userService.getUserByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (user.getPassword().equals(password)) {
-                return new ResponseEntity<>(user, HttpStatus.OK);
+                Map<String, Object> response = new HashMap<>();
+                response.put("user", user);
+                response.put("role", user.getRoleName().toString());
+                return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
             }
         } else {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            Optional<UserCompany> userCompanyOptional = userCompanyService.getUserCompanyByEmail(email);
+            if (userCompanyOptional.isPresent()) {
+                UserCompany userCompany = userCompanyOptional.get();
+                if (userCompany.getPassword().equals(password)) {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("user", userCompany);
+                    response.put("role", "Company");
+                    return new ResponseEntity<>(response, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
         }
     }
 }
-

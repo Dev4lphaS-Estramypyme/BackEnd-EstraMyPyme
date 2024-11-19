@@ -1,16 +1,19 @@
 package dev4lphas.estramypyme.estramypyme_backend.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
+import dev4lphas.estramypyme.estramypyme_backend.model.Question;
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
 import dev4lphas.estramypyme.estramypyme_backend.model.TestQuestion;
 import dev4lphas.estramypyme.estramypyme_backend.repository.TestRepository;
 import dev4lphas.estramypyme.estramypyme_backend.repository.TestQuestionRepository;
 import dev4lphas.estramypyme.estramypyme_backend.repository.AnswerRepository;
+import dev4lphas.estramypyme.estramypyme_backend.repository.QuestionRepository;
 
 @Service
 public class TestService {
@@ -23,6 +26,9 @@ public class TestService {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
 
     // Métodos para Test
     public List<Test> findAllTests() {
@@ -90,5 +96,12 @@ public class TestService {
     public void deleteAllAnswersByTestId(Long testId) {
         List<Answer> answers = answerRepository.findByTestId(testId);
         answerRepository.deleteAll(answers);
+    }
+
+    public List<Question> findQuestionsByTestId(Long testId) {
+        List<TestQuestion> testQuestions = testQuestionRepository.findByTestId(testId);
+        return testQuestions.stream()
+                            .map(TestQuestion::getQuestion)
+                            .collect(Collectors.toList());
     }
 }

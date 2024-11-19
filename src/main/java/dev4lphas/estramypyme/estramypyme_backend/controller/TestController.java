@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
+import dev4lphas.estramypyme.estramypyme_backend.model.Question;
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
 
 @RestController
@@ -83,10 +83,10 @@ public class TestController {
     }
 
     @GetMapping("/answers/test/{testId}/question/{questionId}")
-public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
-    List<Answer> answers = testService.findAnswersByTestIdAndQuestionId(testId, questionId);
-    return ResponseEntity.ok(answers);
-}
+    public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
+        List<Answer> answers = testService.findAnswersByTestIdAndQuestionId(testId, questionId);
+        return ResponseEntity.ok(answers);
+    }
 
     @PostMapping("/answers")
     public ResponseEntity<Map<String, Object>> createAnswer(@RequestBody Answer answer) {
@@ -124,4 +124,11 @@ public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariabl
             return ResponseEntity.badRequest().body(response);
         }
     }
+
+    @GetMapping("/questions/{testId}")
+    public ResponseEntity<List<Question>> getQuestionsByTestId(@PathVariable Long testId) {
+        List<Question> questions = testService.findQuestionsByTestId(testId);
+        return ResponseEntity.ok(questions);
+    }
+
 }
