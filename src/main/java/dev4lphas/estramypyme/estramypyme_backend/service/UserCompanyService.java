@@ -113,4 +113,13 @@ public class UserCompanyService {
 
         return usercompanyRepository.save(existingUserCompany);
     }
+
+    public UserCompany updateBookDownloadedStatus(String email) {
+        UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
+
+        existingUserCompany.setIsBookDownloaded(true);
+
+        return usercompanyRepository.save(existingUserCompany);
+    }
 }

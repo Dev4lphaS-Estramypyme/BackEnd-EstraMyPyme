@@ -19,7 +19,7 @@ CREATE TABLE users_companies (
     name_or_business_name VARCHAR(255) NOT NULL,  -- Nombre o Razón Social
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    type_user ENUM('Natural', 'Juridico') NOT NULL,  -- Tipos de usuarios
+    type_user ENUM('Natural', 'Jurídica') NOT NULL,  -- Tipos de usuarios
     company_size ENUM('Pequeña', 'Mediana', 'Grande') NOT NULL,  -- Tamaño de la compañía
     sector ENUM('Sector_Agrícola', 'Sector_Industrial', 'Sector_Servicios', 'Sector_Construcción') NOT NULL,  -- Sector de la compañía
     registration_date DATE,
@@ -82,7 +82,7 @@ INSERT INTO users (email, password, name, active, role_name) VALUES
 
 -- Insertar datos en la tabla de usuarios de empresas
 INSERT INTO users_companies (identification_number, name_or_business_name, email, password, type_user, company_size, sector, registration_date, active, is_book_downloaded) VALUES
-(123456789, 'Company A', 'companya@example.com', 'companyapassword', 'Juridico', 'Mediana', 'Sector_Servicios', '2023-01-01', TRUE, FALSE),
+(123456789, 'Company A', 'companya@example.com', 'companyapassword', 'Jurídica', 'Mediana', 'Sector_Servicios', '2023-01-01', TRUE, FALSE),
 (987654321, 'Company B', 'companyb@example.com', 'companybpassword', 'Natural', 'Pequeña', 'Sector_Agrícola', '2023-02-01', TRUE, TRUE);
 
 -- Insertar datos en la tabla de tests
