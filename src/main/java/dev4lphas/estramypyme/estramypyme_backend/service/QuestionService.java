@@ -20,9 +20,9 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
-    // Buscar pregunta por ID
-    public Question findQuestionById(Long id) {
-        return questionRepository.findById(id).orElse(null);
+    // Obtener preguntas activas
+    public List<Question> findActiveQuestions() {
+        return questionRepository.findByActiveTrue();
     }
 
     // Creación de Question
@@ -53,13 +53,12 @@ public class QuestionService {
         if (existingQuestion == null)
             return null;
 
-        existingQuestion.setQuestion(existingQuestion.getQuestion());
-        existingQuestion.setCreatedAt(existingQuestion.getCreatedAt());
         existingQuestion.setActive(question.getActive() == null ? existingQuestion.getActive() : question.getActive());
 
         return questionRepository.save(existingQuestion);
     }
 
+    // Eliminar pregunta por ID
     public void deleteQuestionById(Long id) {
         questionRepository.deleteById(id);
     }

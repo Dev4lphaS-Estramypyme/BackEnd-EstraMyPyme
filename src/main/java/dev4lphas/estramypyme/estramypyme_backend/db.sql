@@ -1,6 +1,6 @@
--- Active: 1731978704887@@bdi5b50qw0wnxcbyvazt-mysql.services.clever-cloud.com@3306@bdi5b50qw0wnxcbyvazt
-CREATE DATABASE backnodo;
-USE backnodo;
+-- Active: 1732497123711@@bdowifryub0xphirwixw-mysql.services.clever-cloud.com@3306
+CREATE DATABASE backnodo2;
+USE backnodo2;
 
 -- Tabla de usuarios
 CREATE TABLE users (
@@ -93,7 +93,15 @@ INSERT INTO tests (company_id, test_date, is_reviewed) VALUES
 -- Insertar datos en la tabla de preguntas
 INSERT INTO questions (question, created_at, active) VALUES
 ('What is your company size?', '2023-01-01', TRUE),
-('What sector does your company belong to?', '2023-01-02', TRUE);
+('What sector does your company belong to?', '2023-01-02', TRUE),
+('Why did you start the business?', '2023-01-03', TRUE),
+('What products and/or services do you offer?', '2023-01-04', TRUE),
+('What are the most frequent customer complaints?', '2023-01-05', TRUE),
+('What are the reasons for the most compliments you receive?', '2023-01-06', TRUE),
+('What is your main means of communication with customers?', '2023-01-07', TRUE),
+('Who are your three strongest competitors?', '2023-01-08', TRUE),
+('What makes your business different from others?', '2023-01-09', TRUE),
+('What is your biggest dream for the business?', '2023-01-10', TRUE);
 
 -- Insertar datos en la tabla de asignaciones de tests a revisores
 INSERT INTO test_assignments (test_id, user_id, assignment_date, review_completed) VALUES
@@ -115,3 +123,4 @@ INSERT INTO answers (test_id, question_id, answer) VALUES
 (2, 2, 'Agriculture');
 
 
+SELECT * FROM users_companies;

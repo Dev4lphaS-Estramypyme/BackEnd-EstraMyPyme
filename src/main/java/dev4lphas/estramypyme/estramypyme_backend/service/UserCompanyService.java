@@ -15,111 +15,37 @@ import java.util.Optional;
 public class UserCompanyService {
 
     @Autowired
-    private UserCompanyRepository usercompanyRepository;
+    private UserCompanyRepository userCompanyRepository;
 
-    public List<UserCompany> getUsersCompanies() {
-        return usercompanyRepository.findAll();
-    }
-
-    public Optional<UserCompany> getUserCompanyByIdentificationNumber(String identificationNumber) {
-        return usercompanyRepository.findByIdentificationNumber(identificationNumber);
-    }
-
-    public UserCompany createUserCompany(UserCompany usercompany) {
-        Optional<UserCompany> existingUserCompany = usercompanyRepository.findByIdentificationNumber(usercompany.getIdentificationNumber());
-        if (existingUserCompany.isPresent()) {
-            throw new EntityExistsException("Ya existe una empresa con el número de identificación: " + usercompany.getIdentificationNumber());
-        }
-        return usercompanyRepository.save(usercompany);
-    }
-
-    public UserCompany updateUserCompany(String identificationNumber, UserCompany usercompany) {
-        Optional<UserCompany> existingUserCompany = usercompanyRepository.findByIdentificationNumber(identificationNumber);
-
-        if (!existingUserCompany.isPresent()) {
-            throw new EntityNotFoundException("Empresa no encontrada con el número de identificación: " + identificationNumber);
+    public UserCompany createUserCompany(UserCompany userCompany) {
+        Optional<UserCompany> existingUserByEmail = userCompanyRepository.findByEmail(userCompany.getEmail());
+        if (existingUserByEmail.isPresent()) {
+            throw new EntityExistsException("La empresa con el correo " + userCompany.getEmail() + " ya existe.");
         }
 
-        UserCompany updatedUserCompany = existingUserCompany.get();
-
-        updatedUserCompany.setIdentificationNumber(usercompany.getIdentificationNumber());
-        updatedUserCompany.setNameOrBusinessName(usercompany.getNameOrBusinessName());
-        updatedUserCompany.setEmail(usercompany.getEmail());
-        updatedUserCompany.setPassword(usercompany.getPassword());
-        updatedUserCompany.setTypeUser(usercompany.getTypeUser());
-        updatedUserCompany.setCompanySize(usercompany.getCompanySize());
-        updatedUserCompany.setSector(usercompany.getSector());
-        updatedUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
-
-        return usercompanyRepository.save(updatedUserCompany);
-    }
-
-    public UserCompany updateStatus(String identificationNumber, boolean isActive) {
-        Optional<UserCompany> existingUserCompany = usercompanyRepository.findByIdentificationNumber(identificationNumber);
-
-        if (!existingUserCompany.isPresent()) {
-            throw new EntityNotFoundException("Empresa no encontrada con el número de identificación: " + identificationNumber);
+        Optional<UserCompany> existingUserById = userCompanyRepository.findByIdentificationNumber(userCompany.getIdentificationNumber());
+        if (existingUserById.isPresent()) {
+            throw new EntityExistsException("La empresa con el número de identificación " + userCompany.getIdentificationNumber() + " ya existe.");
         }
 
-        UserCompany updatedUserCompany = existingUserCompany.get();
-        updatedUserCompany.setActive(isActive);
-
-        return usercompanyRepository.save(updatedUserCompany);
+        return userCompanyRepository.save(userCompany);
     }
 
-    @Transactional
-    public void deleteUserCompanyByIdentificationNumber(String identificationNumber) {
-        Optional<UserCompany> existingUserCompany = usercompanyRepository.findByIdentificationNumber(identificationNumber);
-        if (!existingUserCompany.isPresent()) {
-            throw new RuntimeException("No se encontró ninguna empresa con la identificación " + identificationNumber);
+    public Optional<UserCompany> authenticate(String email, String password) {
+        Optional<UserCompany> userCompany = userCompanyRepository.findByEmail(email);
+        if (userCompany.isPresent() && userCompany.get().getPassword().equals(password)) {
+            return userCompany;
+        } else {
+            return Optional.empty();
         }
-        usercompanyRepository.deleteByIdentificationNumber(identificationNumber);
-    }
-
-    public Optional<UserCompany> getUserCompanyByEmail(String email) {
-        return usercompanyRepository.findByEmail(email);
-    }
-
-    @Transactional
-    public void deleteUserCompanyByEmail(String email) {
-        Optional<UserCompany> existingUserCompany = usercompanyRepository.findByEmail(email);
-        if (!existingUserCompany.isPresent()) {
-            throw new RuntimeException("No se encontró ninguna empresa con el correo " + email);
-        }
-        usercompanyRepository.deleteByEmail(email);
-    }
-
-    public UserCompany updateUserCompanyByEmail(String email, UserCompany usercompany) {
-        UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
-
-                existingUserCompany.setIdentificationNumber(usercompany.getIdentificationNumber());
-                existingUserCompany.setNameOrBusinessName(usercompany.getNameOrBusinessName());
-                existingUserCompany.setEmail(usercompany.getEmail());
-                existingUserCompany.setPassword(usercompany.getPassword());
-                existingUserCompany.setTypeUser(usercompany.getTypeUser());
-                existingUserCompany.setCompanySize(usercompany.getCompanySize());
-                existingUserCompany.setSector(usercompany.getSector());
-                existingUserCompany.setRegistrationDate(usercompany.getRegistrationDate());
-
-        return usercompanyRepository.save(existingUserCompany);
-    }
-
-    public UserCompany updateStatusByEmail(String email, boolean isActive) {
-        UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
-
-        existingUserCompany.setActive(isActive);
-
-        return usercompanyRepository.save(existingUserCompany);
     }
 
     public UserCompany updateBookDownloadedStatus(String email) {
-        UserCompany existingUserCompany = usercompanyRepository.findByEmail(email)
+        UserCompany existingUserCompany = userCompanyRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Empresa no encontrada con el correo: " + email));
 
         existingUserCompany.setIsBookDownloaded(true);
 
-        return usercompanyRepository.save(existingUserCompany);
+        return userCompanyRepository.save(existingUserCompany);
     }
 }
