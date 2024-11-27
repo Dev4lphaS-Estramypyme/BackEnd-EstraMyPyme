@@ -1,6 +1,6 @@
--- Active: 1731797351372@@b4tjbar7sfncvjdq7u4t-mysql.services.clever-cloud.com@3306
-CREATE DATABASE backnodo;
-USE backnodo;
+-- Active: 1732497123711@@bdowifryub0xphirwixw-mysql.services.clever-cloud.com@3306
+CREATE DATABASE backnodo2;
+USE backnodo2;
 
 -- Tabla de usuarios
 CREATE TABLE users (
@@ -19,7 +19,7 @@ CREATE TABLE users_companies (
     name_or_business_name VARCHAR(255) NOT NULL,  -- Nombre o Razón Social
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    type_user ENUM('Natural', 'Juridico') NOT NULL,  -- Tipos de usuarios
+    type_user ENUM('Natural', 'Jurídica') NOT NULL,  -- Tipos de usuarios
     company_size ENUM('Pequeña', 'Mediana', 'Grande') NOT NULL,  -- Tamaño de la compañía
     sector ENUM('Sector_Agrícola', 'Sector_Industrial', 'Sector_Servicios', 'Sector_Construcción') NOT NULL,  -- Sector de la compañía
     registration_date DATE,
@@ -82,7 +82,7 @@ INSERT INTO users (email, password, name, active, role_name) VALUES
 
 -- Insertar datos en la tabla de usuarios de empresas
 INSERT INTO users_companies (identification_number, name_or_business_name, email, password, type_user, company_size, sector, registration_date, active, is_book_downloaded) VALUES
-(123456789, 'Company A', 'companya@example.com', 'companyapassword', 'Juridico', 'Mediana', 'Sector_Servicios', '2023-01-01', TRUE, FALSE),
+(123456789, 'Company A', 'companya@example.com', 'companyapassword', 'Jurídica', 'Mediana', 'Sector_Servicios', '2023-01-01', TRUE, FALSE),
 (987654321, 'Company B', 'companyb@example.com', 'companybpassword', 'Natural', 'Pequeña', 'Sector_Agrícola', '2023-02-01', TRUE, TRUE);
 
 -- Insertar datos en la tabla de tests
@@ -93,7 +93,15 @@ INSERT INTO tests (company_id, test_date, is_reviewed) VALUES
 -- Insertar datos en la tabla de preguntas
 INSERT INTO questions (question, created_at, active) VALUES
 ('What is your company size?', '2023-01-01', TRUE),
-('What sector does your company belong to?', '2023-01-02', TRUE);
+('What sector does your company belong to?', '2023-01-02', TRUE),
+('Why did you start the business?', '2023-01-03', TRUE),
+('What products and/or services do you offer?', '2023-01-04', TRUE),
+('What are the most frequent customer complaints?', '2023-01-05', TRUE),
+('What are the reasons for the most compliments you receive?', '2023-01-06', TRUE),
+('What is your main means of communication with customers?', '2023-01-07', TRUE),
+('Who are your three strongest competitors?', '2023-01-08', TRUE),
+('What makes your business different from others?', '2023-01-09', TRUE),
+('What is your biggest dream for the business?', '2023-01-10', TRUE);
 
 -- Insertar datos en la tabla de asignaciones de tests a revisores
 INSERT INTO test_assignments (test_id, user_id, assignment_date, review_completed) VALUES
@@ -113,3 +121,6 @@ INSERT INTO answers (test_id, question_id, answer) VALUES
 (1, 2, 'Services'),
 (2, 1, 'Small'),
 (2, 2, 'Agriculture');
+
+
+SELECT * FROM users_companies;

@@ -15,9 +15,9 @@ import dev4lphas.estramypyme.estramypyme_backend.model.User;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
 import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
 
-
 @RestController
 @RequestMapping("api/users")
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class UserController {
 
     @Autowired
@@ -247,6 +247,24 @@ public class UserController {
                     + " because they have related test assignments. But if necessary you can deactivate it ");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher with ID " + id + " not found.");
+        }
+    }
+    // Endpoint para manejar el login
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> loginData) {
+        String email = loginData.get("email");
+        String password = loginData.get("password");
+
+        Optional<User> userOptional = userService.getUserByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getPassword().equals(password)) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+            }
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
     }
 }

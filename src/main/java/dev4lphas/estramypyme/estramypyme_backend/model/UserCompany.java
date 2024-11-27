@@ -34,8 +34,9 @@ public class UserCompany {
     @Column(name = "company_size", nullable = false)
     private CompanySize companySize;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sector", nullable = false)
-    private String sector;
+    private Sector sector;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") // Configura el formato de fecha
     @Column(name = "registration_date")
@@ -50,10 +51,15 @@ public class UserCompany {
 
     // Enumeraciones para los campos de tipo ENUM en la base de datos
     public enum TypeUser {
-        Natural, Juridico
+        Natural, Jurídica
     }
 
     public enum CompanySize {
         Pequeña, Mediana, Grande
     }
+
+    public enum Sector {
+        Sector_Agrícola, Sector_Industrial, Sector_Servicios, Sector_Construcción
+    }
+    
 }
