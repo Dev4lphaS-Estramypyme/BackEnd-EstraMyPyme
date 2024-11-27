@@ -1,78 +1,166 @@
-# Estramypyme Backend
-
+# Backend EstraMyPyme
 
 ## Descripción
 
-Este es el backend de la plataforma web **EstraMyPyme**, que permite a individuos y empresas realizar pruebas diagnósticas basadas en la metodología descrita en el libro "EstraMyPyme" de la Universidad EAFIT. La API gestiona la autenticación de usuarios, roles, preguntas de las pruebas, y proporciona un panel de administración para la visualización de resultados. Las pruebas diagnósticas pueden modificarse, tienen historial, y pueden realizarse cada 6 meses. El backend está desarrollado siguiendo los principios de la S de **SOLID** para garantizar una estructura limpia y escalable.
+El proyecto **EstraMyPyme** es el backend de una plataforma web diseñada para permitir a individuos y empresas realizar pruebas diagnósticas basadas en la metodología descrita en el libro *EstraMyPyme* de la Universidad EAFIT. Este backend proporciona funcionalidades para la gestión de usuarios, roles, preguntas de las pruebas, y permite la administración de resultados a través de un panel.
+
+El objetivo principal es conectar un frontend con la base de datos, implementando un sistema CRUD robusto y funcional. El proyecto sigue los principios de la **S** de **SOLID** para garantizar una estructura limpia, escalable y fácilmente mantenible.
+
+---
 
 ## Características
 
-- **Autenticación y autorización**: Utiliza JSON Web Tokens (JWT) para manejar el inicio de sesión y la autorización de usuarios.
-- **CRUD de usuarios**: Administradores pueden gestionar usuarios y sus roles.
-- **Pruebas diagnósticas**: Creación, modificación y gestión de las pruebas, que pueden realizarse cada 6 meses.
-- **Historial de preguntas**: Las preguntas de las pruebas pueden ser modificadas y tienen un historial de cambios.
-- **Descarga de resultados en PDF**.
-- **Roles**: Existen superadministradores que pueden asignar permisos a otros administradores, así como roles para estudiantes, profesores y administradores.
-- **Tipos de usuarios**: Se gestionan tanto usuarios naturales como jurídicos.
+- **Gestión de usuarios**:
+  - Registro, consulta, actualización y eliminación de usuarios.
+  - Clasificación en tipos: naturales y jurídicos.
+  - Manejo de roles: superadministradores, administradores, estudiantes y profesores.
+
+- **Gestión de pruebas diagnósticas**:
+  - Creación y modificación de pruebas con restricciones cada 6 meses.
+  - Historial de cambios en las preguntas.
+
+- **Descarga de resultados**:
+  - Generación de resultados en formato PDF para consulta o almacenamiento.
+
+- **Panel de administración**:
+  - Visualización de datos organizados para la gestión eficiente de usuarios y pruebas.
+
+---
 
 ## Tecnologías Utilizadas
 
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON-web-tokens&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
+El backend fue desarrollado con las siguientes herramientas:
+
+- **Java**: Lenguaje principal para el desarrollo.
+- **Spring Boot**: Framework para la creación de la API REST.
+- **Spring Data JPA**: Para la gestión de datos.
+- **MySQL**: Base de datos relacional utilizada para almacenar la información.
+- **Maven**: Para la gestión de dependencias y construcción del proyecto.
+- **Postman**: Para realizar pruebas de los endpoints de la API.
+- **Visual Studio Code**: Entorno de desarrollo utilizado.
+
+---
 
 ## Instalación
 
-### Pre-rrequisitos
+### Requisitos Previos
 
-- Java 11+
-- Maven
-- MySQL
+- **Java 11** o superior.
+- **Maven** instalado.
+- **MySQL Workbench** para gestionar la base de datos.
+- **Clever Cloud** para gestionar la base de datos (Opcional).
+- **Postman** para realizar pruebas de los endpoints.
+- **Angular CLI** para correr el frontend.
+- **Visual Studio Code** como entorno de desarrollo.
+
+---
+
+### Configuración Inicial
+
+#### Paso 1: Clonar El Repositorio
+Desde tu entorno de desarrollo, ejecuta el siguiente comando en la terminal:
+```bash
+Copiar codigo
+git clone https://github.com/Dev4lphaS-Estramypyme/BackEnd-EstraMyPyme.git
+Esto descargará el proyecto en tu entorno de desarrollo.
+
+Paso 2: Crear la Base de Datos
+Crea una base de datos llamada backnodo en MySQL Workbench:
+
+sql
+Copiar código
+CREATE DATABASE backnodo;
+Después, Crea las tablas como estan en el archivo db.sql, el cual se encuentra dentro del proyecto.
+
+Paso 3: Configurar el Archivo application.properties
+Edita el archivo src/main/resources/application.properties para incluir las credenciales de tu base de datos:
+
+properties
+Copiar código
+spring.datasource.url=jdbc:mysql://localhost/backnodo
+spring.datasource.username=root
+spring.datasource.password=(contraseña de tu localhost)
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+Paso 4: Configurar CORS
+Configura CORS en tu proyecto para permitir conexiones desde el frontend. Agrega esta clase en el paquete de configuración (config):
+
+java
+Copiar código
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig {
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200") // Cambiar si el frontend se despliega en otra URL
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+            }
+        };
+    }
+}
 
 
+Paso 5: Iniciar el Servidor
+Arranca el servidor con el siguiente comando:
 
-## Buenas Prácticas de Commits
-Al realizar commits, seguimos las siguientes convenciones para mantener un historial limpio y organizado:
+bash
+Copiar código
+mvn spring-boot:run
 
-### feat: Se utiliza para agregar una nueva característica.
+Si utilizas Visual Studio Code, también puedes instalar la extensión Code Runner y ejecutar el proyecto seleccionando la opción Run Code en el archivo principal.
 
-Ejemplo: git commit -m "feat(arquitectura): creación de la estructura del proyecto aplicando principios SOLID"
-fix: Se usa para corregir un bug.
+Paso 6: Clonar y Ejecutar el Frontend
+Clona el proyecto del frontend ejecutando el siguiente comando:
 
-Ejemplo: git commit -m "fix(login): corregir error de autenticación"
-perf: Para optimizar el rendimiento.
+bash
+Copiar código
+git clone https://github.com/Dev4lphaS-Estramypyme/FrontEnd-EstraMyPyme.git
+Navega al directorio del proyecto clonado y ejecuta:
 
-Ejemplo: git commit -m "perf(api): optimización en la consulta de pruebas"
-build: Para cambios en la construcción o despliegue.
+bash
+Copiar código
+npm install
+ng serve
+Esto levantará el servidor del frontend en http://localhost:4200.
 
-Ejemplo: git commit -m "build(deploy): agregar configuración para el pipeline de despliegue"
-ci: Se utiliza para cambios en la integración continua.
+ Paso 7: Uso de Postman
+Para realizar pruebas de los endpoints de la API, puedes acceder a la colección de Postman creada para este proyecto.
 
-Ejemplo: git commit -m "ci(pipeline): ajustar configuración de CI"
-docs: Para cambios en la documentación.
+Abre Postman.
+Importa la colección de endpoints de EstraMyPyme utilizando el siguiente enlace:
+https://estramypymebackend.postman.co/workspace/EstraMyPyme_Backend~828e4b65-e033-47ad-90fa-104e2d4f6b78/collection/38604144-8ce70132-6cab-4bff-9816-704a8e84d3eb?action=share&creator=38664908
 
-Ejemplo: git commit -m "docs(readme): agregar detalles de instalación"
-refactor: Refactorización del código sin cambios funcionales.
+Esto te proporcionará acceso a todos los endpoints preconfigurados para que puedas realizar las pruebas necesarias de la API.
 
-Ejemplo: git commit -m "refactor(auth): renombrar métodos en el servicio de autenticación"
-style: Cambios de estilo, como espacios o tabulaciones.
+Buenas Prácticas de Commits
+Seguimos un estándar para los mensajes de commit, asegurando un historial limpio y entendible:
 
-Ejemplo: git commit -m "style(main): ajustes en el formato del código"
-test: Para agregar o modificar pruebas.
+feat: Agregar una nueva funcionalidad.
+Ejemplo: git commit -m "feat(user): agregar registro de usuarios"
+fix: Solución de errores.
+Ejemplo: git commit -m "fix(auth): corregir validación de contraseñas"
+docs: Actualización de documentación.
+Ejemplo: git commit -m "docs(readme): agregar instrucciones de instalación"
+refactor: Cambios en el código sin modificar la funcionalidad.
+Ejemplo: git commit -m "refactor(service): optimizar consultas a la base de datos"
+Estrategia de Ramificación
+Ramas Utilizadas
+main: Rama principal que contiene la versión estable del proyecto.
+task-{ID}-{descripción}: Ramas específicas para tareas.
+Ejemplo: git checkout -b task-123-crear-endpoint-usuarios
+Repositorio
+El código fuente está disponible en el siguiente repositorio:
+Repositorio en GitHub
 
-Ejemplo: git commit -m "test(auth): agregar pruebas unitarias para autenticación"
-
-
-## Estrategia de Ramificación
-
-Las ramas se nombrarán en base al ID de las tareas asignadas en Azure DevOps, asegurando un control claro del trabajo. La estructura de ramas será la siguiente:
-
-main: Rama principal.
-
-### task-ID-Título-de-la-tarea: Ramas para cada tarea específica.
-Por ejemplo, si se está trabajando en la tarea con el ID 123 para la arquitectura del proyecto, la rama sería:
-git checkout -b task-123-Arquitectura-del-proyecto
+Autor
+El proyecto fue creado utilizando Spring Boot para generar la base del backend y desarrollado en Visual Studio Code. La implementación se enfoca en conectar un frontend con una base de datos MySQL, cumpliendo con los requisitos funcionales mediante un sistema CRUD completo.
