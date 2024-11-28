@@ -1,0 +1,785 @@
+{
+	"info": {
+		"_postman_id": "8ce70132-6cab-4bff-9816-704a8e84d3eb",
+		"name": "EstraMyPyme_Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38604144",
+		"_collection_link": "https://estramypymebackend.postman.co/workspace/EstraMyPyme_Backend~828e4b65-e033-47ad-90fa-104e2d4f6b78/collection/38604144-8ce70132-6cab-4bff-9816-704a8e84d3eb?action=share&source=collection_link&creator=38604144"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "GetAdminByEmail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/users/admin/admin@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "PostAdmin - crear",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   \r\n    {\r\n        \"email\": \"adminprueba@example.com\",\r\n        \"password\": \"adminpassword\",\r\n        \"name\": \"Admin User2\",\r\n        \"active\": true\r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/admin"
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteAdminById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/admin/deleteById/3"
+							},
+							"response": []
+						},
+						{
+							"name": "PutAdmin - actualizar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\r\n    \"email\": \"adminprueba@example.com\",\r\n    \"password\": \"adminpasswords\",\r\n    \"name\": \"Admian prueba\",\r\n    \"active\": \"true\",\r\n    \"rolename\": \"Admin\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/admin/update/adminprueba@example.com"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Teacher",
+					"item": [
+						{
+							"name": "PostTeacher - crear",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   \r\n    {\r\n        \"email\": \"teacherPrueba2@example.com\",\r\n        \"password\": \"teacherpassword\",\r\n        \"name\": \"teacher User1\",\r\n        \"active\": true\r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/teacher"
+							},
+							"response": []
+						},
+						{
+							"name": "GetTeacherByEmail",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/teacher/teacher@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "PutTeacher - actualizar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "    {\r\n        \"email\": \"teacherPrueba2@example.com\",\r\n        \"password\": \"teacherpassword\",\r\n        \"name\": \"teacher prueba2\",\r\n        \"active\": false,\r\n        \"rolename\": \"aaaa\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/teacher/update/teacherPrueba2@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "PutTeacher - actualizar role",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "      \r\n    {\r\n        \"rolename\": 3\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/teacher/role/teacher@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "PutTeacher - actualizar active",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"active\": 0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/teacher/active/teacher2@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteTeacherById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/teacher/deleteById/7"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Student",
+					"item": [
+						{
+							"name": "PostStudent - crear",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   \r\n    {\r\n        \"email\": \"student3@example.com\",\r\n        \"password\": \"studentpassword\",\r\n        \"name\": \"student User\",\r\n        \"active\": true\r\n    \r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/student"
+							},
+							"response": []
+						},
+						{
+							"name": "PostStudent - actualizar role",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   \r\n    {\r\n        \"rolename\": 1\r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/student/role/student2@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "PostStudent - actualizar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   \r\n    {\r\n        \"email\": \"student2@example.com\",\r\n        \"password\": \"studentpassword\",\r\n        \"name\": \"student3 User\",\r\n        \"active\": true,\r\n        \"rolename\": \"student\"\r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/student/update/student@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "PostStudent - actualizar active",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   \r\n    {\r\n        \"active\": 1\r\n    }\r\n    ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/student/active/student@example.com"
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteStudentById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users/student/deleteById/5"
+							},
+							"response": []
+						},
+						{
+							"name": "GetStudentByEmail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/users/student/student@example.com"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "GetUsersAll",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8080/api/users"
+							},
+							"response": []
+						},
+						{
+							"name": "GetUsersById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8080/api/users/1"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "usersCompanies",
+			"item": [
+				{
+					"name": "Lista Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/usersCompanies"
+					},
+					"response": []
+				},
+				{
+					"name": "Busqueda Usuario Nit o cedula",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/usersCompanies/987654321"
+					},
+					"response": []
+				},
+				{
+					"name": "Busqueda Usuario por correo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/usersCompanies/correo/companyb@example.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Usuario o empresa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identificationNumber\": \"0981234567\",\n    \"nameOrBusinessName\": \"Company c\",\n    \"email\": \"companyc@example.com\",\n    \"password\": \"companybpassword\",\n    \"typeUser\": \"Natural\",\n    \"companySize\": \"Pequeña\",\n    \"sector\": \"Sector Industrial\",\n    \"registrationDate\": \"2023-02-01\",\n    \"active\": true,\n    \"isBookDownloaded\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usersCompanies"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario Por Nit o cedula",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identificationNumber\": \"987654321\",\n    \"nameOrBusinessName\": \"Company C\",\n    \"email\": \"companyb@example.com\",\n    \"password\": \"companybpassword\",\n    \"typeUser\": \"Natural\",\n    \"companySize\": \"Pequeña\",\n    \"sector\": \"Sector Agrícola\",\n    \"registrationDate\": \"2023-02-01\",\n    \"active\": true,\n    \"isBookDownloaded\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usersCompanies/edit/987654321"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario Por Correo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identificationNumber\": \"987654321\",\n    \"nameOrBusinessName\": \"Company D\",\n    \"email\": \"companyb@example.com\",\n    \"password\": \"companybpassword\",\n    \"typeUser\": \"Natural\",\n    \"companySize\": \"Pequeña\",\n    \"sector\": \"Sector Agrícola\",\n    \"registrationDate\": \"2023-02-01\",\n    \"active\": true,\n    \"isBookDownloaded\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usersCompanies/edit/correo/companyb@example.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Activar o desactivar Usuario Por Nit o Cedula",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "false",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usersCompanies/status/123456789"
+					},
+					"response": []
+				},
+				{
+					"name": "Activar o desactivar Usuario Por Correo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "false",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usersCompanies/status/correo/example@empresa.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario Por Nit o Cedula",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/usersCompanies/987654321"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar usuario Por Correo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/usersCompanies/correo/companyb@example.com"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tests",
+			"item": [
+				{
+					"name": "CreateTest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"\",\r\n    \"company\": {\r\n        \"id\": 1\r\n    },\r\n    \"testDate\": \"2024-12-17\",\r\n    \"isReviewed\": false\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/tests"
+					},
+					"response": []
+				},
+				{
+					"name": "SearchByCompanyId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/tests/1"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteByIdAndCompanyId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/tests/deleteByIdAndCompanyId/1/1"
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateTest",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"company\": {\r\n        \"id\": 1\r\n    },\r\n    \"testDate\": \"2024-11-17\",\r\n    \"isReviewed\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/tests"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAnswerTestQuestion",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/tests/answers/test/1/question/1"
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAnswer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"companyId\": 123,\r\n    \"testId\": 1,\r\n    \"answers\": [\r\n        {\r\n            \"questionId\": 1,\r\n            \"answer\": \"Respuesta a la pregunta 1\"\r\n        },\r\n                {\r\n            \"questionId\": 2,\r\n            \"answer\": \"Respuesta a la pregunta 2\"\r\n        },\r\n                {\r\n            \"questionId\": 3,\r\n            \"answer\": \"Respuesta a la pregunta 3\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/tests/createanswers"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAnswerByTestForAnswor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/tests/answers/test/1/question/1"
+					},
+					"response": []
+				},
+				{
+					"name": "GetLasId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/tests/last-id"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "questions",
+			"item": [
+				{
+					"name": "GetQuestionAll",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/questions"
+					},
+					"response": []
+				},
+				{
+					"name": "PostQuestion - crear",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"question\": \"What is your company size15?\",\r\n        \"createdAt\": \"2023-11-07\",\r\n        \"active\": \"true\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/questions/create"
+					},
+					"response": []
+				},
+				{
+					"name": "PostTextQuestion - actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"question\": \"What is your company 4444\",\r\n    \"createdAt\": \"2023-11-23\",\r\n    \"active\": false\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/questions/updatetext/3"
+					},
+					"response": []
+				},
+				{
+					"name": "PostStatusQuestion - actualizar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"active\": \"true\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/questions/updatestatus/2"
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteQuestion - eliminar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"question\": \"What is your company size22332?\",\r\n        \"createdAt\": \"2023-11-07\",\r\n        \"active\": \"true\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/questions/delete/3"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "testAssignments",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"testId\": 2,\r\n    \"userId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/testAssignments"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/testAssignments/deleteById/2"
+					},
+					"response": []
+				},
+				{
+					"name": "SearchById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/testAssignments/3"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reviewComplete\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/testAssignments/3"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
