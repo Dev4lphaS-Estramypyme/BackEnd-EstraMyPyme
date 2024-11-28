@@ -1,4 +1,4 @@
-/* package dev4lphas.estramypyme.estramypyme_backend.controller;
+package dev4lphas.estramypyme.estramypyme_backend.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.TestAssignment;
 import dev4lphas.estramypyme.estramypyme_backend.service.TestAssignmentService;
-import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
 import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
 
 @RestController
@@ -27,9 +26,6 @@ public class TestAssignmentsController {
 
     @Autowired
     private TestAssignmentService testAssignmentService;
-
-    @Autowired
-    private TestService testService;
 
     @Autowired
     private UserService userService;
@@ -51,7 +47,7 @@ public class TestAssignmentsController {
         Map<String, Object> response = new HashMap<>();
 
         // Validar si is_reviewed en la tabla test está en false
-        if (testService.isReviewed(testAssignment.getTestId())) {
+        if (testAssignmentService.isReviewed(testAssignment.getTestId())) {
             response.put("success", false);
             response.put("message", "No se puede crear el TestAssignment porque is_reviewed en la tabla test está en true");
             return ResponseEntity.badRequest().body(response);
@@ -111,4 +107,4 @@ public class TestAssignmentsController {
         response.put("data", savedTestAssignment);
         return ResponseEntity.ok(response);
     }
-} */
+}

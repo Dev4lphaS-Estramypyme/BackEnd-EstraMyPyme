@@ -28,7 +28,11 @@ public class Test {
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers;
 
-    public Boolean isReviewed() {
+    public Boolean getIsReviewed() {
         return isReviewed;
+    }
+
+    public void setIsReviewed(Boolean isReviewed) {
+        this.isReviewed = isReviewed;
     }
 }

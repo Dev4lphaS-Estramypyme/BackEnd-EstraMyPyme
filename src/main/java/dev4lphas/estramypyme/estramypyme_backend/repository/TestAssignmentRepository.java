@@ -9,7 +9,6 @@ import dev4lphas.estramypyme.estramypyme_backend.model.TestAssignment;
 
 @Repository
 public interface TestAssignmentRepository extends JpaRepository<TestAssignment, Long> {
-  List<TestAssignment> findByTestId(Long testId);
-  boolean existsByTestId(Long testId);
-  
+    List<TestAssignment> findByTestId(Long testId);
+    boolean existsByTestId(Long testId);
 }

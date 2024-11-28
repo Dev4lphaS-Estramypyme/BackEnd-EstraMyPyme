@@ -1,6 +1,7 @@
 package dev4lphas.estramypyme.estramypyme_backend.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class TestService {
         } else {
             throw new IllegalArgumentException("Test no encontrado con id: " + id + " y companyId: " + companyId);
         }
+    }
+
+    public boolean isReviewed(Long testId) {
+        Optional<Test> test = testRepository.findById(testId);
+        return test.isPresent() && test.get().getIsReviewed();
     }
 
     // Métodos para Answer
