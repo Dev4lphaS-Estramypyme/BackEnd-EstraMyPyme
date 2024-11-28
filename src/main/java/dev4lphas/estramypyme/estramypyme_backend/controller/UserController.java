@@ -43,6 +43,149 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+
+    // Obtener un admin por email.
+    @GetMapping("/admin/{email}")
+    public ResponseEntity<User> getAdminByEmail(@PathVariable String email) {
+        User admin = userService.getAdminByEmail(email);
+        if (admin == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(admin, HttpStatus.OK);
+    }
+
+    // Crear un nuevo admin.
+    @PostMapping("/admin")
+    public ResponseEntity<User> createAdmin(@RequestBody User user) {
+        User newAdmin = userService.createAdmin(user);
+        return new ResponseEntity<>(newAdmin, HttpStatus.CREATED);
+    }
+
+    // Actualizar un admin existente.
+    @PutMapping("/admin/{email}")
+    public ResponseEntity<User> updateAdmin(@PathVariable String email, @RequestBody User user) {
+        User updatedAdmin = userService.updateAdmin(email, user);
+        if (updatedAdmin == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
+    }
+
+    // Eliminar un admin por id.
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<Object> deleteAdminById(@PathVariable Long id) {
+        userService.deleteAdminById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Obtener un estudiante por email.
+    @GetMapping("/student/{email}")
+    public ResponseEntity<User> getStudentByEmail(@PathVariable String email) {
+        User student = userService.getStudentByEmail(email);
+        if (student == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+
+    // Crear un nuevo estudiante.
+    @PostMapping("/student")
+    public ResponseEntity<User> createStudent(@RequestBody User user) {
+        User newStudent = userService.createStudent(user);
+        return new ResponseEntity<>(newStudent, HttpStatus.CREATED);
+    }
+
+    // Actualizar un estudiante existente.
+    @PutMapping("/student/{email}")
+    public ResponseEntity<User> updateStudent(@PathVariable String email, @RequestBody User user) {
+        User updatedStudent = userService.updateStudent(email, user);
+        if (updatedStudent == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+    }
+
+    // Actualizar el rol de un estudiante.
+    @PutMapping("/student/role/{email}")
+    public ResponseEntity<User> updateStudentRole(@PathVariable String email, @RequestParam int roleNumber) {
+        User updatedStudent = userService.updateStudentRole(email, roleNumber);
+        if (updatedStudent == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+    }
+
+    // Actualizar el estado activo de un estudiante.
+    @PutMapping("/student/active/{email}")
+    public ResponseEntity<User> updateStudentActive(@PathVariable String email, @RequestBody User user) {
+        User updatedStudent = userService.updateStudentActive(email, user);
+        if (updatedStudent == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+    }
+
+    // Eliminar un estudiante por id.
+    @DeleteMapping("/student/{id}")
+    public ResponseEntity<Object> deleteStudentById(@PathVariable Long id) {
+        userService.deleteStudentById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Obtener un profesor por email.
+    @GetMapping("/teacher/{email}")
+    public ResponseEntity<User> getTeacherByEmail(@PathVariable String email) {
+        User teacher = userService.getTeacherByEmail(email);
+        if (teacher == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(teacher, HttpStatus.OK);
+    }
+
+    // Crear un nuevo profesor.
+    @PostMapping("/teacher")
+    public ResponseEntity<User> createTeacher(@RequestBody User user) {
+        User newTeacher = userService.createTeacher(user);
+        return new ResponseEntity<>(newTeacher, HttpStatus.CREATED);
+    }
+
+    // Actualizar un profesor existente.
+    @PutMapping("/teacher/{email}")
+    public ResponseEntity<User> updateTeacher(@PathVariable String email, @RequestBody User user) {
+        User updatedTeacher = userService.updateTeacher(email, user);
+        if (updatedTeacher == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedTeacher, HttpStatus.OK);
+    }
+
+    // Actualizar el rol de un profesor.
+    @PutMapping("/teacher/role/{email}")
+    public ResponseEntity<User> updateTeacherRole(@PathVariable String email, @RequestParam int roleNumber) {
+        User updatedTeacher = userService.updateTeacherRole(email, roleNumber);
+        if (updatedTeacher == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedTeacher, HttpStatus.OK);
+    }
+
+    // Actualizar el estado activo de un profesor.
+    @PutMapping("/teacher/active/{email}")
+    public ResponseEntity<User> updateTeacherActive(@PathVariable String email, @RequestBody User user) {
+        User updatedTeacher = userService.updateTeacherActive(email, user);
+        if (updatedTeacher == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedTeacher, HttpStatus.OK);
+    }
+
+    // Eliminar un profesor por id.
+    @DeleteMapping("/teacher/{id}")
+    public ResponseEntity<Object> deleteTeacherById(@PathVariable Long id) {
+        userService.deleteTeacherById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     // Endpoint para manejar el login
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
@@ -58,16 +201,6 @@ public class UserController {
     }
 
     private String getRedirectUrl(User user) {
-        switch (user.getRoleName()) {
-            case Admin:
-                return "/dashboard-admin";
-            case Teacher:
-                return "/dashboard-teacher";
-            case Student:
-                return "/dashboard-student";
-            default:
-                return "/dashboard";
-        }
+        return "/dashboard-admin";
     }
 }
-
