@@ -1,4 +1,4 @@
--- Active: 1732497123711@@bdowifryub0xphirwixw-mysql.services.clever-cloud.com@3306
+-- Active: 1732808237514@@btavawvvopx4tyq8dafl-mysql.services.clever-cloud.com@3306
 CREATE DATABASE backnodo2;
 USE backnodo2;
 

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import dev4lphas.estramypyme.estramypyme_backend.DTO.LoginRequest;
 import dev4lphas.estramypyme.estramypyme_backend.model.User;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
 import dev4lphas.estramypyme.estramypyme_backend.service.UserService;
@@ -44,23 +45,15 @@ public class UserController {
 
     // Endpoint para manejar el login
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody Map<String, String> loginData) {
-        String email = loginData.get("email");
-        String password = loginData.get("password");
-
-        Optional<User> userOptional = userService.getUserByEmail(email);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (user.getPassword().equals(password)) {
-                Map<String, Object> response = new HashMap<>();
-                response.put("user", user);
-                response.put("redirectUrl", getRedirectUrl(user));
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
-            }
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
+        Optional<User> user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        if (user.isPresent()) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user.get());
+            response.put("redirectUrl", getRedirectUrl(user.get()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Correo y/o contraseña incorrectos.", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -77,3 +70,4 @@ public class UserController {
         }
     }
 }
+

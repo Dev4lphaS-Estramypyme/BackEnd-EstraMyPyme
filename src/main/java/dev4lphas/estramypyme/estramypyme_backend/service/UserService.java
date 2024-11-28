@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public User getAdminByEmail(String email) {
-        return userRepository.findAdminByEmail(email);
+        return userRepository.findByEmailAndRoleName(email, User.RoleName.Admin).orElse(null);
     }
 
     public User createAdmin(User user) {
@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public User updateAdmin(String email, User user) {
-        User existingAdmin = userRepository.findAdminByEmail(email);
+        User existingAdmin = userRepository.findByEmailAndRoleName(email, User.RoleName.Admin).orElse(null);
         if (existingAdmin != null) {
             existingAdmin.setName(user.getName());
             existingAdmin.setPassword(user.getPassword());
@@ -55,7 +55,7 @@ public class UserService {
     }
 
     public User getStudentByEmail(String email) {
-        return userRepository.findStudentByEmail(email);
+        return userRepository.findByEmailAndRoleName(email, User.RoleName.Student).orElse(null);
     }
 
     public User createStudent(User user) {
@@ -64,7 +64,7 @@ public class UserService {
     }
 
     public User updateStudent(String email, User user) {
-        User existingStudent = userRepository.findStudentByEmail(email);
+        User existingStudent = userRepository.findByEmailAndRoleName(email, User.RoleName.Student).orElse(null);
         if (existingStudent != null) {
             existingStudent.setName(user.getName());
             existingStudent.setPassword(user.getPassword());
@@ -75,7 +75,7 @@ public class UserService {
     }
 
     public User updateStudentRole(String email, int roleNumber) {
-        User existingStudent = userRepository.findStudentByEmail(email);
+        User existingStudent = userRepository.findByEmailAndRoleName(email, User.RoleName.Student).orElse(null);
         if (existingStudent != null) {
             existingStudent.setRoleName(convertToRoleName(roleNumber));
             return userRepository.save(existingStudent);
@@ -84,7 +84,7 @@ public class UserService {
     }
 
     public User updateStudentActive(String email, User user) {
-        User existingStudent = userRepository.findStudentByEmail(email);
+        User existingStudent = userRepository.findByEmailAndRoleName(email, User.RoleName.Student).orElse(null);
         if (existingStudent != null) {
             existingStudent.setActive(user.isActive());
             return userRepository.save(existingStudent);
@@ -97,7 +97,7 @@ public class UserService {
     }
 
     public User getTeacherByEmail(String email) {
-        return userRepository.findTeacherByEmail(email);
+        return userRepository.findByEmailAndRoleName(email, User.RoleName.Teacher).orElse(null);
     }
 
     public User createTeacher(User user) {
@@ -106,7 +106,7 @@ public class UserService {
     }
 
     public User updateTeacher(String email, User user) {
-        User existingTeacher = userRepository.findTeacherByEmail(email);
+        User existingTeacher = userRepository.findByEmailAndRoleName(email, User.RoleName.Teacher).orElse(null);
         if (existingTeacher != null) {
             existingTeacher.setName(user.getName());
             existingTeacher.setPassword(user.getPassword());
@@ -117,7 +117,7 @@ public class UserService {
     }
 
     public User updateTeacherRole(String email, int roleNumber) {
-        User existingTeacher = userRepository.findTeacherByEmail(email);
+        User existingTeacher = userRepository.findByEmailAndRoleName(email, User.RoleName.Teacher).orElse(null);
         if (existingTeacher != null) {
             existingTeacher.setRoleName(convertToRoleName(roleNumber));
             return userRepository.save(existingTeacher);
@@ -126,7 +126,7 @@ public class UserService {
     }
 
     public User updateTeacherActive(String email, User user) {
-        User existingTeacher = userRepository.findTeacherByEmail(email);
+        User existingTeacher = userRepository.findByEmailAndRoleName(email, User.RoleName.Teacher).orElse(null);
         if (existingTeacher != null) {
             existingTeacher.setActive(user.isActive());
             return userRepository.save(existingTeacher);
@@ -150,8 +150,12 @@ public class UserService {
                 throw new IllegalArgumentException("Invalid role number: " + roleNumber);
         }
     }
+
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-}
 
+    public Optional<User> authenticate(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password);
+    }
+}

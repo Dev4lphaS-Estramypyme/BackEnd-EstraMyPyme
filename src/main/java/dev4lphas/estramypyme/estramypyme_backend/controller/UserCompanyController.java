@@ -11,17 +11,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usersCompanies")
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class UserCompanyController {
 
     @Autowired
     private UserCompanyService userCompanyService;
 
     @PostMapping("/register")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> register(@RequestBody UserCompany userCompany) {
         try {
             UserCompany newUserCompany = userCompanyService.createUserCompany(userCompany);
@@ -32,18 +35,45 @@ public class UserCompanyController {
     }
 
     @PostMapping("/login")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
         Optional<UserCompany> userCompany = userCompanyService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (userCompany.isPresent()) {
-            return new ResponseEntity<>(userCompany.get(), HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("userCompany", userCompany.get());
+            response.put("redirectUrl", "/dashboard");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Correo y/o contraseña incorrectos.", HttpStatus.UNAUTHORIZED);
         }
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<UserCompany>> getAllUserCompanies() {
+        List<UserCompany> userCompanies = userCompanyService.getAllUserCompanies();
+        return new ResponseEntity<>(userCompanies, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserCompany> getUserCompanyById(@PathVariable Long id) {
+        Optional<UserCompany> userCompany = userCompanyService.getUserCompanyById(id);
+        if (userCompany.isPresent()) {
+            return new ResponseEntity<>(userCompany.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUserCompanyById(@PathVariable Long id) {
+        try {
+            userCompanyService.deleteUserCompanyById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("La empresa con el ID " + id + " no fue encontrada.", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/bookDownloaded/{email}")
-    @CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
     public ResponseEntity<Object> updateBookDownloadedStatus(@PathVariable String email) {
         try {
             UserCompany updatedUserCompany = userCompanyService.updateBookDownloadedStatus(email);
