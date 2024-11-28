@@ -38,7 +38,7 @@ public class UserCompany {
     @Column(name = "sector", nullable = false)
     private Sector sector;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") // Configura el formato de fecha
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "registration_date")
     @Temporal(TemporalType.DATE)
     private Date registrationDate = new Date();
@@ -49,7 +49,6 @@ public class UserCompany {
     @Column(name = "is_book_downloaded", nullable = false)
     private Boolean isBookDownloaded = false;
 
-    // Enumeraciones para los campos de tipo ENUM en la base de datos
     public enum TypeUser {
         Natural, Jurídica
     }
@@ -61,5 +60,4 @@ public class UserCompany {
     public enum Sector {
         Sector_Agrícola, Sector_Industrial, Sector_Servicios, Sector_Construcción
     }
-    
 }

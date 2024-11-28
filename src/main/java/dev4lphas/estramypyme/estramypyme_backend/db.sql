@@ -124,3 +124,4 @@ INSERT INTO answers (test_id, question_id, answer) VALUES
 
 
 SELECT * FROM users_companies;
+

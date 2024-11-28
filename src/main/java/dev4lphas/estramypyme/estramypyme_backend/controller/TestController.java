@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
 import dev4lphas.estramypyme.estramypyme_backend.model.Test;
-
 import dev4lphas.estramypyme.estramypyme_backend.service.TestService;
 
 @RestController
 @RequestMapping("/tests")
+@CrossOrigin(origins = "http://localhost:4200", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class TestController {
 
     @Autowired
@@ -30,8 +30,7 @@ public class TestController {
     public ResponseEntity<Map<String, Object>> createTest(@RequestBody Test test) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Test createdTest = testService.saveTest(test);
-            // Aquí puedes agregar la lógica para asociar preguntas al test si es necesario
+            Test createdTest = testService.saveTestWithAnswers(test);
             response.put("success", true);
             response.put("message", "Test creado exitosamente");
             response.put("data", createdTest);
@@ -83,25 +82,20 @@ public class TestController {
     }
 
     @GetMapping("/answers/test/{testId}/question/{questionId}")
-public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
-    List<Answer> answers = testService.findAnswersByTestIdAndQuestionId(testId, questionId);
-    return ResponseEntity.ok(answers);
-}
+    public ResponseEntity<List<Answer>> getAnswersByTestIdAndQuestionId(@PathVariable Long testId, @PathVariable Long questionId) {
+        List<Answer> answers = testService.findAnswersByTestIdAndQuestionId(testId, questionId);
+        return ResponseEntity.ok(answers);
+    }
 
     @PostMapping("/answers")
-    public ResponseEntity<Map<String, Object>> createAnswer(@RequestBody Answer answer) {
+    public ResponseEntity<Map<String, Object>> createAnswers(@RequestBody List<Answer> answers) {
         Map<String, Object> response = new HashMap<>();
         try {
-            List<Answer> existingAnswers = testService.findAnswersByTestIdAndQuestionId(answer.getTest().getId(), answer.getQuestion().getId());
-            if (!existingAnswers.isEmpty()) {
-                response.put("success", false);
-                response.put("message", "Ya existe una respuesta para esta pregunta en este test. Elimina la respuesta existente antes de agregar una nueva.");
-                return ResponseEntity.badRequest().body(response);
+            for (Answer answer : answers) {
+                testService.saveAnswer(answer);
             }
-            Answer createdAnswer = testService.saveAnswer(answer);
             response.put("success", true);
-            response.put("message", "Respuesta creada exitosamente");
-            response.put("data", createdAnswer);
+            response.put("message", "Respuestas creadas exitosamente");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (RuntimeException e) {
             response.put("success", false);

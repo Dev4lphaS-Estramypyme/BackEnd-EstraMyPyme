@@ -10,13 +10,14 @@ public class Answer {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "test_id")
+    @JoinColumn(name = "test_id", nullable = false)
     private Test test;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
+    @Column(nullable = false)
     private String answer;
 
     // Getters y Setters
@@ -51,4 +52,4 @@ public class Answer {
     public void setAnswer(String answer) {
         this.answer = answer;
     }
-} 
+}

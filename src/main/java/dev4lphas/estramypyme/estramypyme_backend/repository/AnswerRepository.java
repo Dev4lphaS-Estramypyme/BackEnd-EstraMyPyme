@@ -9,6 +9,6 @@ import dev4lphas.estramypyme.estramypyme_backend.model.Answer;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    List<Answer> findByTestId(Long testId);
     List<Answer> findByTestIdAndQuestionId(Long testId, Long questionId);
+    void deleteByTestIdAndQuestionId(Long testId, Long questionId);
 }
