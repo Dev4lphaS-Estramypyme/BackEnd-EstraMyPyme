@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserCompanyRepository extends JpaRepository<UserCompany, Long> {
-    Optional<UserCompany> findByIdentificationNumber(String identificationNumber);
+    boolean existsByIdentificationNumber(String identificationNumber);
     Optional<UserCompany> findByEmail(String email);
     Optional<UserCompany> findByEmailAndPassword(String email, String password);
     void deleteByEmail(String email);

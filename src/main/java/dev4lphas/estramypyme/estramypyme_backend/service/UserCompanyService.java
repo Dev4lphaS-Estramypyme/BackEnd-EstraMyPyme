@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import dev4lphas.estramypyme.estramypyme_backend.model.UserCompany;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserCompanyRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityExistsException;
 
 @Service
 public class UserCompanyService {
@@ -25,6 +26,9 @@ public class UserCompanyService {
     }
 
     public UserCompany createUserCompany(UserCompany userCompany) {
+        if (userCompanyRepository.existsByIdentificationNumber(userCompany.getIdentificationNumber())) {
+            throw new EntityExistsException("La empresa con el número de identificación " + userCompany.getIdentificationNumber() + " ya existe.");
+        }
         userCompany.setIsBookDownloaded(false); // Asegurarse de que el valor por defecto sea false
         return userCompanyRepository.save(userCompany);
     }

@@ -11,4 +11,5 @@ import dev4lphas.estramypyme.estramypyme_backend.model.TestAssignment;
 public interface TestAssignmentRepository extends JpaRepository<TestAssignment, Long> {
     List<TestAssignment> findByTestId(Long testId);
     boolean existsByTestId(Long testId);
+    void deleteByUserId(Long userId);
 }

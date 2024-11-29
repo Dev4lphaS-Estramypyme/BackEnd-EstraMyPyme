@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 import dev4lphas.estramypyme.estramypyme_backend.model.User;
 import dev4lphas.estramypyme.estramypyme_backend.model.User.RoleName;
 import dev4lphas.estramypyme.estramypyme_backend.repository.UserRepository;
+import dev4lphas.estramypyme.estramypyme_backend.repository.TestAssignmentRepository;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TestAssignmentRepository testAssignmentRepository;
 
     public boolean isAdminOrTeacher(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
@@ -51,6 +55,9 @@ public class UserService {
     }
 
     public void deleteAdminById(Long id) {
+        // Eliminar dependencias
+        testAssignmentRepository.deleteByUserId(id);
+        // Eliminar el usuario
         userRepository.deleteById(id);
     }
 
@@ -74,15 +81,6 @@ public class UserService {
         return null;
     }
 
-    public User updateStudentRole(String email, int roleNumber) {
-        User existingStudent = userRepository.findByEmailAndRoleName(email, User.RoleName.Student).orElse(null);
-        if (existingStudent != null) {
-            existingStudent.setRoleName(convertToRoleName(roleNumber));
-            return userRepository.save(existingStudent);
-        }
-        return null;
-    }
-
     public User updateStudentActive(String email, User user) {
         User existingStudent = userRepository.findByEmailAndRoleName(email, User.RoleName.Student).orElse(null);
         if (existingStudent != null) {
@@ -93,6 +91,9 @@ public class UserService {
     }
 
     public void deleteStudentById(Long id) {
+        // Eliminar dependencias
+        testAssignmentRepository.deleteByUserId(id);
+        // Eliminar el usuario
         userRepository.deleteById(id);
     }
 
@@ -116,15 +117,6 @@ public class UserService {
         return null;
     }
 
-    public User updateTeacherRole(String email, int roleNumber) {
-        User existingTeacher = userRepository.findByEmailAndRoleName(email, User.RoleName.Teacher).orElse(null);
-        if (existingTeacher != null) {
-            existingTeacher.setRoleName(convertToRoleName(roleNumber));
-            return userRepository.save(existingTeacher);
-        }
-        return null;
-    }
-
     public User updateTeacherActive(String email, User user) {
         User existingTeacher = userRepository.findByEmailAndRoleName(email, User.RoleName.Teacher).orElse(null);
         if (existingTeacher != null) {
@@ -135,20 +127,10 @@ public class UserService {
     }
 
     public void deleteTeacherById(Long id) {
+        // Eliminar dependencias
+        testAssignmentRepository.deleteByUserId(id);
+        // Eliminar el usuario
         userRepository.deleteById(id);
-    }
-
-    public RoleName convertToRoleName(int roleNumber) {
-        switch (roleNumber) {
-            case 0:
-                return RoleName.Admin;
-            case 1:
-                return RoleName.Student;
-            case 2:
-                return RoleName.Teacher;
-            default:
-                throw new IllegalArgumentException("Invalid role number: " + roleNumber);
-        }
     }
 
     public Optional<User> getUserByEmail(String email) {

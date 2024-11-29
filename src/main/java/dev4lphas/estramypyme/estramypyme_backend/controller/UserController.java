@@ -105,15 +105,6 @@ public class UserController {
         return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
     }
 
-    // Actualizar el rol de un estudiante.
-    @PutMapping("/student/role/{email}")
-    public ResponseEntity<User> updateStudentRole(@PathVariable String email, @RequestParam int roleNumber) {
-        User updatedStudent = userService.updateStudentRole(email, roleNumber);
-        if (updatedStudent == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
-    }
 
     // Actualizar el estado activo de un estudiante.
     @PutMapping("/student/active/{email}")
@@ -159,15 +150,6 @@ public class UserController {
         return new ResponseEntity<>(updatedTeacher, HttpStatus.OK);
     }
 
-    // Actualizar el rol de un profesor.
-    @PutMapping("/teacher/role/{email}")
-    public ResponseEntity<User> updateTeacherRole(@PathVariable String email, @RequestParam int roleNumber) {
-        User updatedTeacher = userService.updateTeacherRole(email, roleNumber);
-        if (updatedTeacher == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedTeacher, HttpStatus.OK);
-    }
 
     // Actualizar el estado activo de un profesor.
     @PutMapping("/teacher/active/{email}")

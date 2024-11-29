@@ -82,4 +82,14 @@ public class UserCompanyController {
             return new ResponseEntity<>("La empresa con el correo " + email + " no fue encontrada.", HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUserCompany(@PathVariable Long id, @RequestBody UserCompany userCompany) {
+        try {
+            UserCompany updatedUserCompany = userCompanyService.updateUserCompany(id, userCompany);
+            return new ResponseEntity<>(updatedUserCompany, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("La empresa con el ID " + id + " no fue encontrada.", HttpStatus.NOT_FOUND);
+        }
+    }
 }
